@@ -3,7 +3,7 @@ body,html,.row-offcanvas {
 }
 
 body {
-  padding-top: 50px;
+	background-color: #f9ffdf;
 }
 
 #sidebar {
@@ -20,13 +20,17 @@ body {
 #main {
   height:100%;
   overflow:auto;
+  padding-bottom: 50px;
 }
-
+.bot-msg{
+	display: none;
+}
 /*
  * off Canvas sidebar
  * --------------------------------------------------
  */
 @media screen and (max-width: 768px) {
+  
   .row-offcanvas {
     position: relative;
     -webkit-transition: all 0.25s ease-out;
