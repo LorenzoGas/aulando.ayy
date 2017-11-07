@@ -9,29 +9,42 @@ var port = process.env.PORT || 8080;
 
 app.get('', (req, res) => {
 
-    console.log('Contatto ApiAi');
+    console.log('Request received');
 
-    requestApiAi((par) => { res.send(par); res.end(); });
+    //Ottieni parametri dal client
+    var id = req.query.id || 0;
+    var requestQuery = req.query.requestQuery;
 
-    
-
+    requestApiAi(id, requestQuery, (par) => { res.send(par); res.end(); });
 });
 
 app.listen(port);
 console.log('Started on port: ' + port);
 
-function requestApiAi(func) {
-    var request = apiai.textRequest('Che aule sono disponibili alle 17?', {
-        sessionId: '0'
+function requestApiAi(id, requestQuery, func) {
+    var request = apiai.textRequest(requestQuery, {
+        sessionId: id
     });
     
     request.on('response', function(response) {
-        //console.log(response);
+        var sessionId = response.id;
         var action = response.result.action;
         var actionIncomplete = response.result.actionIncomplete;
         var speech = response.result.fulfillment.speech;
 
-        var out = "action: " + action + "<br>incomplete: " + actionIncomplete + "<br>speech: " + speech;
+        var out = {};
+        out.sessionId = sessionId;
+        out.action = action;
+        out.actionIncomplete = actionIncomplete;
+        out.speech = speech;
+
+        if (actionIncomplete) {
+            // Inoltra al client obj out
+        }
+        else {
+            // Interroga il db e restituisci la "risposta" al client
+        }
+
 
         func(out);
     });
