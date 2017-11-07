@@ -1,3 +1,9 @@
+/*
+
+HOST: sql.mgdeveloper.com
+USERID e DBNAME: mgdevelo94537
+PASSWORD: mgde99250
+*/
 CREATE TABLE Professore(
 	id 		INT,
 	nome 	VARCHAR(255) NOT NULL,
