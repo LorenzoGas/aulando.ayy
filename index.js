@@ -1,7 +1,7 @@
 var express = require('express');
-var apiai = require('apiai');
+var dialogflow_module = require('./dialogflow');
+var database_module = require('./database');
 
-var apiai = apiai("86453201f670452faaf81ac70df26651");
 const app = express();
 
 
@@ -15,44 +15,29 @@ app.get('', (req, res) => {
     var id = req.query.id || 0;
     var requestQuery = req.query.requestQuery;
 
-    requestApiAi(id, requestQuery, (par) => { res.send(par); res.end(); });
+    dialogflow_module.requestApiAi(
+        id,
+        requestQuery,
+        (out) => { dispatcher(res, out) }
+    );
 });
 
 app.listen(port);
 console.log('Started on port: ' + port);
 
-function requestApiAi(id, requestQuery, func) {
-    var request = apiai.textRequest(requestQuery, {
-        sessionId: id
-    });
-    
-    request.on('response', function(response) {
-        var sessionId = response.id;
-        var action = response.result.action;
-        var actionIncomplete = response.result.actionIncomplete;
-        var speech = response.result.fulfillment.speech;
 
-        var out = {};
-        out.sessionId = sessionId;
-        out.action = action;
-        out.actionIncomplete = actionIncomplete;
-        out.speech = speech;
+function dispatcher(res, out) {
+    if(!out.actionIncomplete) {
+        switch(out.action) {
+            case database_module.actions.aule_libere_from_hour: 
+                out.data = database_module.trova_aule_libere_from_hour(out.parameters.time);
+            break;
 
-        if (actionIncomplete) {
-            // Inoltra al client obj out
+            case database_module.actions.aule_libere_for_hour:
+                out.data = database_module.trova_aule_libere_for_hour(out.parameters.duration);
+            break;
         }
-        else {
-            // Interroga il db e restituisci la "risposta" al client
-        }
+    }
 
-
-        func(out);
-    });
-    
-    request.on('error', function(error) {
-        console.log(error);
-        func(error);
-    });
-    
-    request.end();
+    res.send(out); res.end();
 }
