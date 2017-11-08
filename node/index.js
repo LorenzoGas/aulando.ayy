@@ -9,10 +9,10 @@ var router = express.Router();
 
 // instantiate mysql
 var con = mysql.createConnection({
-	host: "sql.mgdeveloper.com",
-	user: "mgdevelo94537",
-	database: "mgdevelo94537",
-	password: "mgde99250"
+	host: "localhost",
+	user: "root",
+	database: "aulando",
+	password: "root"
 });
 con.connect(function(err) {
 	if (err) 
