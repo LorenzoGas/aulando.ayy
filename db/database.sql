@@ -1,31 +1,58 @@
-/*
-
-HOST: sql.mgdeveloper.com
-USERID e DBNAME: mgdevelo94537
-PASSWORD: mgde99250
-*/
+CREATE DATABASE IF NOT EXISTS Aulando;
+USE Aulando;
 CREATE TABLE Professore(
-	id 		INT,
+	id 		INT AUTO_INCREMENT,
+	codice 	VARCHAR(255),
 	nome 	VARCHAR(255) NOT NULL,
 	cognome VARCHAR(255) NOT NULL,
 	CONSTRAINT PKProfessore PRIMARY KEY (id)
 );
+CREATE TABLE Corso(
+	id		INT AUTO_INCREMENT,
+	codice 	VARCHAR(255),
+	nome 	VARCHAR(255) NOT NULL,
+	CONSTRAINT PKCorso PRIMARY KEY (id)
+);
+CREATE TABLE Anno(
+	id		INT AUTO_INCREMENT,
+	nome 	VARCHAR(255) NOT NULL,
+	codice	VARCHAR(255),
+	corso	INT NOT NULL,
+	CONSTRAINT PKAnno PRIMARY KEY (id),
+	CONSTRAINT FKcorsoAnno FOREIGN KEY (corso) REFERENCES Corso(id)
+);
 CREATE TABLE Materia(
-	id		INT,
+	id		INT AUTO_INCREMENT,
 	nome 	VARCHAR(255) NOT NULL,
 	anno 	VARCHAR(255),
 	CONSTRAINT PKMateria PRIMARY KEY (id)
 );
+
+CREATE TABLE Dipartimento(
+	id 		INT AUTO_INCREMENT,
+	codice	VARCHAR(255),
+	nome 	VARCHAR(255) NOT NUlL,
+	CONSTRAINT PKDipartimento PRIMARY KEY (id)
+);
+CREATE TABLE Polo(
+	id 				INT AUTO_INCREMENT,
+	codice			VARCHAR(255),
+	nome 			VARCHAR(255) NOT NULL,
+	dipartimento	INT NOT NULL,
+	CONSTRAINT PKPolo PRIMARY KEY (id),
+	CONSTRAINT FKdipartimentoPolo FOREIGN KEY (dipartimento) REFERENCES Dipartimento(id)
+);
 CREATE TABLE Aula(
-	id		INT,
+	id		INT AUTO_INCREMENT,
 	codice	VARCHAR(255) NOT NULL,
 	nome 	VARCHAR(255) NOT NULL,
-	polo 	VARCHAR(255),
+	polo 	INT NOT NULL,
 	piano 	VARCHAR(255),
-	CONSTRAINT PKAula PRIMARY KEY (id)
+	CONSTRAINT PKAula PRIMARY KEY (id),
+	CONSTRAINT FKPoloAula FOREIGN KEY (polo) REFERENCES Polo(id)
 );
 CREATE TABLE Lezione(
-	id				INT,
+	id				INT AUTO_INCREMENT,
 	professore		INT NOT NULL,
 	materia			INT NOT NULL,
 	aula			INT NOT NULL,
@@ -37,4 +64,12 @@ CREATE TABLE Lezione(
 	CONSTRAINT FKprofessoreLezione 	FOREIGN KEY (professore) 	REFERENCES Professore(id),
 	CONSTRAINT FKmateriaLezione 	FOREIGN KEY (materia) 		REFERENCES Materia(id),
 	CONSTRAINT FKaulaLezione 		FOREIGN KEY (aula) 			REFERENCES Aula(id)
+);
+CREATE TABLE MateriaCorso(
+	id		INT AUTO_INCREMENT,
+	materia	INT NOT NULL,
+	corso	INT NOT NULL,
+	CONSTRAINT PKMateriaCorso 			PRIMARY KEY (id),
+	CONSTRAINT FKMateriaMateriaCorso 	FOREIGN KEY (materia) 	REFERENCES Materia(id),
+	CONSTRAINT FKCorsoMateriaCorso  	FOREIGN KEY (corso) 	REFERENCES Corso(id)
 );
