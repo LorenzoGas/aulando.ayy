@@ -1,6 +1,13 @@
 .label-floating{
     position: absolute !important;
     bottom: 20px;
+    
+}
+
+@media  screen and (max-width: 800px) {
+    .label-floating{
+        width:100%;
+    }
 }
 
 .chat-container{
@@ -8,6 +15,7 @@
     margin-top:40px;
     height: 100%;
     position: static !important;
+    padding-bottom:50px;
 }
 
 .message-send{
@@ -17,6 +25,12 @@
     padding-right: 30px;    
 }
 .message-receive{
+    align: right;
+    margin-top: 0px !important;
+    text-transform: none !important;
+}
+
+.message-send{
     align: left;
     margin-top: 0px !important;
     text-transform: none !important;
