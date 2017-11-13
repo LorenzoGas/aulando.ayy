@@ -90,9 +90,32 @@ def fillSubcorsi ():
 #returns 1 se finito correttamente, -1 se errore
 def fillMaterie ():
     try:
-
-        #TODO
+        with open('elenco_attivita') as json_data:
+            elenco_attivita = json.load(json_data)
         
+        for anno in elenco_attivita:   
+            for attivita in anno['elenco']: 
+
+                #SELECT id_corso
+                codice_corso = attivita['valore'][2:attivita['valore'].find('_')-1] #tra "EC" e "_"
+
+                with connection.cursor() as cursor:
+                    sql = "SELECT id FROM Corso WHERE codice = %s;" % (codice_corso)
+                    cursor.execute(sql)
+                    id_corso = cursor.fetchone()[0]
+                
+                #SELECT id_docente
+                with connection.cursor() as cursor:
+                    sql = "SELECT id FROM Docente WHERE cognome = '%s';" % (corso['valore'])
+                    cursor.execute(sql)
+                    id_corso = cursor.fetchone()[0]
+
+                #INSERT materia
+                with connection.cursor() as cursor:
+                    sql = "INSERT INTO Corso (codice, nome, corso) VALUES ('%s','%s',%d);" % (subcorso['valore'], subcorso['label'], id_corso)
+                    cursor.execute(sql)
+                connection.commit()
+            
         return 1
     except:
         return -1
@@ -147,7 +170,59 @@ def fillAule ():
 def fillLezioni ():
     try:
 
-        #TODO
+        for anno in elenco_corsi:   
+            for corso in anno['elenco']:    
+                for subcorso in corso['elenco_anni']:
+
+                    #get orario da easyroom
+                    r = requests.get("https://easyroom.unitn.it/Orario/list_call.php?form-type=corso&anno=%s&corso=%s&anno2=%s&date=%s&_lang=it" % (anno['valore'], corso['valore'], subcorso['valore'], date)) 
+                    orario = r.json()
+
+                    for classe in orario:
+                        
+                        # ------- MATERIA
+                        #INSERT materia
+                        with connection.cursor() as cursor:
+                            sql = "INSERT INTO Corso (nome, id_subcorso) VALUES ('%s');" % (classe['nome_insegnamento'])
+                            cursor.execute(sql)
+                        connection.commit()
+
+                        # ------- AULA
+                        #INSERT aula
+                        nome_aula = classe['aula'][:classe['aula'].find('[')-2] #prima di " [Dip"
+                        codice_aula = classe['codice_aula'][classe['codice_aula'].find('/')+1:] #dopo '/'
+                        dipartimento = classe['codice_aula'][:classe['codice_aula'].find('/')-1] #prima di '/'
+                        with connection.cursor() as cursor:
+                            sql = "INSERT INTO Aula (codice, nome, dipartimento) VALUES ('%s','%s','%s','%s');" % (aula, codice_aula, dipartimento) #TODO polo e piano
+                            cursor.execute(sql)
+                        connection.commit()
+
+                        # ------- LEZIONE
+                        #SELECT id_docente
+                        nome = docente['label'][:docente['label'].find(" ")-1] #dopo ' '
+                        cognome = docente['label'][docente['label'].find(" ")+1:] #prima di ' ' 
+                        with connection.cursor() as cursor:
+                            sql = "SELECT id FROM Docente WHERE cognome = '%s' AND nome='%s';" % (cognome, nome)
+                            cursor.execute(sql)
+                            id_docente = cursor.fetchone()[0]
+
+                        #SELECT id_materia
+                        with connection.cursor() as cursor:
+                            sql = "SELECT id FROM Materia WHERE codice = '%s';" % (classe['nome_insegnamento'])
+                            cursor.execute(sql)
+                            id_materia = cursor.fetchone()[0]
+                        
+                        #SELECT id_aula
+                        with connection.cursor() as cursor:
+                            sql = "SELECT id FROM Aula WHERE codice = '%s';" % (codice_aula)
+                            cursor.execute(sql)
+                            id_aula = cursor.fetchone()[0]
+
+                        #INSERT lezione
+                        with connection.cursor() as cursor:
+                            sql = "INSERT INTO Lezione (docente, materia, aula, tipologia, inizio, fine, giorno) VALUES (%d, %d, %d, '%s', %s, %s);" % (id_docente, id_materia, id_aula, classe['tipo'], classe['ora_inizio'].replace(":", ""), classe['ora_fine'].replace(":", ""), classe['data'])
+                            cursor.execute(sql)
+                        connection.commit()
         
         return 1
     except:
