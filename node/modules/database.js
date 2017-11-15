@@ -1,6 +1,6 @@
 /*globals require, console, process */
 var mysql = require('mysql');
-var sql = "";
+var query = require("queries.js");
 // instantiate mysql
 var con = mysql.createConnection({
 	host: "localhost",
@@ -67,12 +67,30 @@ var orarioAula = function(aula,giorno){
 }
 
 //Funzioni per la restituzione del database pure, senza calcoli
-
-var listaAule = function(){
-    sql = "";
+/**
+ * @description lista dei dipartimenti esistenti
+ * @returns lista dei dipartimenti in JSON
+ */
+var listaDipartimenti = function(){
+    sql = query.listaDipartimenti;
     con.connect(function(err) {
         if (err) throw err;
         con.query(sql, function (err, result) {
+            if (err) throw err;
+            return(result);
+        });
+    });
+}
+/**
+ * @description lista delle aule esistenti, dato un dipartimento
+ * @argument dipartimento codice del dipartimento
+ * @returns lista delle aula in JSON
+ */
+var listaAule = function(dipartimento){
+    sql = query.listaAule;
+    con.connect(function(err) {
+        if (err) throw err;
+        con.query(sql,[dipartimento], function (err, result) {
             if (err) throw err;
             return(result);
         });
@@ -82,3 +100,6 @@ var listaAule = function(){
 exports.aulaLibera = aulaLibera;
 exports.aulaLiberaDalleAlle = aulaLiberaDalleAlle;
 exports.orarioAula = orarioAula;
+
+exports.listaAule = listaAule;
+exports.listaDipartimenti = listaDipartimenti;
