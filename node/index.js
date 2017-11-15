@@ -74,14 +74,19 @@ router.get('/aulaLiberaDalleAlle', function (req, res) {
 });
 
 /**
- * Restituisce una lista di lezioni per un'aula specificata in un giorno specificato. Il formato dell'output è specificato nei parametri.
+ * @description Restituisce una lista di lezioni per un'aula specificata in un giorno specificato. Il formato dell'output è specificato nei parametri.
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param giorno: giorno in cui si vogliono gli orari, nel formato 'dd-mm-aaaa'
+ * @param aula: codice per l'aula per la quale si vogliono gli orari, es: 'B107'
+ * 
+ * @returns lista di lezioni, nel formato specificato.
  */
 router.get('/aulaLiberaDalleAlle', function (req, res) {
     var formato = req.body.formato;
     var giorno = req.body.giorno;
     var aula = req.body.aula;
     var result = mysql.orarioAula(aula,giorno);
-    if(formato == "json")
+    if(formato == "json" || formato == null)
         result = json(result);
     res.end(result);
 });

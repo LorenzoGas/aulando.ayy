@@ -59,7 +59,7 @@ CREATE TABLE Lezione(
 	aula			INT NOT NULL,
 	inizio			INT(4) NOT NULL,
 	fine			INT(4) NOT NULL,
-	giorno			DATETIME NOT NULL,
+	giorno			DATE NOT NULL,
 	tipologia		VARCHAR(255) NOT NULL,
 	CONSTRAINT PKLezione 			PRIMARY KEY (id),
 	CONSTRAINT FKdocenteLezione 	FOREIGN KEY (docente) 	REFERENCES Docente(id),
