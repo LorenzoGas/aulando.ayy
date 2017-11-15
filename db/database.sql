@@ -59,7 +59,7 @@ CREATE TABLE Lezione(
 	aula			INT NOT NULL,
 	inizio			INT(4) NOT NULL,
 	fine			INT(4) NOT NULL,
-	giorno			DATETIME NOT NULL,
+	giorno			DATE NOT NULL,
 	tipologia		VARCHAR(255) NOT NULL,
 	CONSTRAINT PKLezione 			PRIMARY KEY (id),
 	CONSTRAINT FKdocenteLezione 	FOREIGN KEY (docente) 	REFERENCES Docente(id),
@@ -67,10 +67,9 @@ CREATE TABLE Lezione(
 	CONSTRAINT FKaulaLezione 		FOREIGN KEY (aula) 		REFERENCES Aula(id)
 );
 CREATE TABLE MateriaSubcorso(
-	id		INT AUTO_INCREMENT,
-	materia	INT NOT NULL,
+	materia		INT NOT NULL,
 	subcorso	INT NOT NULL,
-	CONSTRAINT MateriaSubcorso 			PRIMARY KEY (id),
+	CONSTRAINT MateriaSubcorso 				PRIMARY KEY (materia, subcorso),
 	CONSTRAINT FKMateriaMateriaSubcorso 	FOREIGN KEY (materia) 	REFERENCES Materia(id),
 	CONSTRAINT FKCorsoMateriaSubcorso 		FOREIGN KEY (subcorso ) REFERENCES Subcorso(id)
 );
