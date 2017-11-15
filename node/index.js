@@ -1,24 +1,11 @@
 /*globals require, console, process */
-var mysql = require('mysql');
 var express = require('express');
 var bodyParser = require('body-parser');
+var mysql = require('/database.js');
 
 // instantiate express
 var app = express();
 var router = express.Router();
-
-// instantiate mysql
-var con = mysql.createConnection({
-	host: "localhost",
-	user: "root",
-	database: "aulando",
-	password: "root"
-});
-con.connect(function(err) {
-	if (err) 
-		throw err;
-	console.log("Connected!");
-});
 
 //Configure bodyparser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,10 +43,52 @@ app.use(function (req, res, next) {
 
 //Services
 router.get('/', function (req, res) {
-    res.json({ message: 'welcome to our api!' });
+    res.end("Benvenuto nella nostra API!");
+});
+
+/**
+ * Restituisce una lista di aule disponibili per un'ora specificata. Il formato dell'output è specificato nei parametri.
+ */
+router.get('/aulaLibera', function (req, res) {
+    var formato = req.body.formato;
+    var giorno = req.body.giorno;
+    var ora = req.body.ora;
+    var result = mysql.aulaLibera(giorno,ora);
+    if(formato == "json")
+        result = json(result);
+    res.end(result);
+});
+
+/**
+ * Restituisce una lista di aule disponibili nell'intervallo di tempo specificato. Il formato dell'output è specificato nei parametri.
+ */
+router.get('/aulaLiberaDalleAlle', function (req, res) {
+    var formato = req.body.formato;
+    var giorno = req.body.giorno;
+    var dalle = req.body.dalle;
+    var alle = req.body.alle;
+    var result = mysql.aulaLiberaDalleAlle(giorno,dalle,alle);
+    if(formato == "json")
+        result = json(result);
+    res.end(result);
+});
+
+/**
+ * Restituisce una lista di lezioni per un'aula specificata in un giorno specificato. Il formato dell'output è specificato nei parametri.
+ */
+router.get('/aulaLiberaDalleAlle', function (req, res) {
+    var formato = req.body.formato;
+    var giorno = req.body.giorno;
+    var aula = req.body.aula;
+    var result = mysql.orarioAula(aula,giorno);
+    if(formato == "json")
+        result = json(result);
+    res.end(result);
 });
 
 //Start listening on port
 app.listen(port, function () {
     console.log('Example app listening on port '+ port);
 });
+
+
