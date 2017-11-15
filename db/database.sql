@@ -48,7 +48,7 @@ CREATE TABLE Aula(
 	piano 			VARCHAR(255),
 	dipartimento 	INT NOT NULL,
 	CONSTRAINT PKAula PRIMARY KEY (id),
-	CONSTRAINT FKPoloAula FOREIGN KEY (polo) REFERENCES Polo(id)
+	CONSTRAINT FKPoloAula FOREIGN KEY (polo) REFERENCES Polo(id),
 	CONSTRAINT FKDipartimentoAula FOREIGN KEY (dipartimento) REFERENCES Dipartimento(id)
 
 );
@@ -66,7 +66,7 @@ CREATE TABLE Lezione(
 	CONSTRAINT FKmateriaLezione 	FOREIGN KEY (materia) 	REFERENCES Materia(id),
 	CONSTRAINT FKaulaLezione 		FOREIGN KEY (aula) 		REFERENCES Aula(id)
 );
-CREATE TABLE MateriaSubcorso( #TODO
+CREATE TABLE MateriaSubcorso(
 	id		INT AUTO_INCREMENT,
 	materia	INT NOT NULL,
 	subcorso	INT NOT NULL,
