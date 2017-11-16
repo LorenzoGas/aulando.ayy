@@ -50,26 +50,30 @@ CREATE TABLE Aula(
 	CONSTRAINT PKAula PRIMARY KEY (id),
 	CONSTRAINT FKPoloAula FOREIGN KEY (polo) REFERENCES Polo(id),
 	CONSTRAINT FKDipartimentoAula FOREIGN KEY (dipartimento) REFERENCES Dipartimento(id)
-
 );
 CREATE TABLE Lezione(
 	id				INT AUTO_INCREMENT,
 	docente			INT NOT NULL,
 	materia			INT NOT NULL,
-	aula			INT NOT NULL,
 	inizio			INT(4) NOT NULL,
 	fine			INT(4) NOT NULL,
 	giorno			DATE NOT NULL,
 	tipologia		VARCHAR(255) NOT NULL,
 	CONSTRAINT PKLezione 			PRIMARY KEY (id),
 	CONSTRAINT FKdocenteLezione 	FOREIGN KEY (docente) 	REFERENCES Docente(id),
-	CONSTRAINT FKmateriaLezione 	FOREIGN KEY (materia) 	REFERENCES Materia(id),
-	CONSTRAINT FKaulaLezione 		FOREIGN KEY (aula) 		REFERENCES Aula(id)
+	CONSTRAINT FKmateriaLezione 	FOREIGN KEY (materia) 	REFERENCES Materia(id)
 );
 CREATE TABLE MateriaSubcorso(
 	materia		INT NOT NULL,
 	subcorso	INT NOT NULL,
 	CONSTRAINT MateriaSubcorso 				PRIMARY KEY (materia, subcorso),
 	CONSTRAINT FKMateriaMateriaSubcorso 	FOREIGN KEY (materia) 	REFERENCES Materia(id),
-	CONSTRAINT FKCorsoMateriaSubcorso 		FOREIGN KEY (subcorso ) REFERENCES Subcorso(id)
+	CONSTRAINT FKCorsoMateriaSubcorso 		FOREIGN KEY (subcorso) REFERENCES Subcorso(id)
+);
+CREATE TABLE AulaLezione(
+	aula		INT NOT NULL,
+	lezione		INT NOT NULL,
+	CONSTRAINT AulaLezione 				PRIMARY KEY (aula, lezione),
+	CONSTRAINT FKAulaAulaLezione 	FOREIGN KEY (aula) 	REFERENCES Aula(id),
+	CONSTRAINT FKLezioneAulaLezione		FOREIGN KEY (lezione) REFERENCES Lezione(id)
 );
