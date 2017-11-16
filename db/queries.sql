@@ -20,14 +20,15 @@ FROM Aula a LEFT JOIN Lezione l ON a.id = l.aula
 WHERE 	l.giorno != 'Z'
 OR		l.fine <= 'X'
 OR		l.inizio >= 'Y'
+GROUP BY a.nome
 
 /* Orario aula X, il giorno Y */
-SELECT d.nome, d.cognome, m.nome
+SELECT d.nome, d.cognome, m.nome, l.inizio, l.fine
 FROM Aula a
 	JOIN Lezione l ON a.id = l.aula
 	JOIN Materia m ON l.materia = m.id 
 	JOIN Docente d ON l.docente = d.id
-WHERE	a.nome = 'X'
+WHERE	a.codice = 'X'
 AND		l.giorno = 'Y'
 
 
