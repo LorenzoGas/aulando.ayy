@@ -23,9 +23,10 @@ OR		l.inizio >= 'Y'
 GROUP BY a.nome
 
 /* Orario aula X, il giorno Y */
-SELECT d.nome, d.cognome, m.nome, l.inizio, l.fine
+SELECT d.nome, m.nome, l.inizio, l.fine
 FROM Aula a
-	JOIN Lezione l ON a.id = l.aula
+	JOIN AulaLezione al ON a.id = al.aula
+	JOIN Lezione l ON al.lezione = l.id
 	JOIN Materia m ON l.materia = m.id 
 	JOIN Docente d ON l.docente = d.id
 WHERE	a.codice = 'X'

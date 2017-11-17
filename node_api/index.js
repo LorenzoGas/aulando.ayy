@@ -1,7 +1,7 @@
 /*globals require, console, process */
 var express = require('express');
 var bodyParser = require('body-parser');
-var mysql = require('/database.js');
+var mysql = require('database.js');
 
 // instantiate express
 var app = express();
@@ -14,7 +14,8 @@ app.use(bodyParser.json());
 // set our port
 var port = process.env.PORT || 8080;
 
-//server methods
+//server methods 
+/*
 app.use((req, res, next) => {
     const err = new Error('Not Found');
     err.status = 404;
@@ -23,7 +24,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.json({ error: { message: err.message } });
-});
+});*/
 
 // middleware route to support CORS and preflighted requests
 app.use(function (req, res, next) {
@@ -41,15 +42,18 @@ app.use(function (req, res, next) {
     next();
 });
 
-//Services
+/********************************************************************** Services *********/
 router.get('/', function (req, res) {
     res.end("Benvenuto nella nostra API!");
 });
 
 /**
- * Restituisce una lista di aule disponibili per un'ora specificata. Il formato dell'output è specificato nei parametri.
+ * @description Restituisce una lista di aule disponibili per un'ora specificata.
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param giorno: giorno in cui si vogliono gli orari, nel formato 'dd-mm-aaaa'
+ * @param ora: ora a cui si è interessati, nel formato militare senza separatori. Es: '1600' = 16:00
  */
-router.get('/aulaLibera', function (req, res) {
+router.get('/auleLibere', function (req, res) {
     var formato = req.body.formato;
     var giorno = req.body.giorno;
     var ora = req.body.ora;
@@ -60,9 +64,14 @@ router.get('/aulaLibera', function (req, res) {
 });
 
 /**
- * Restituisce una lista di aule disponibili nell'intervallo di tempo specificato. Il formato dell'output è specificato nei parametri.
+ * @description Restituisce una lista di aule disponibili nell'intervallo di tempo specificato. 
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param giorno: giorno in cui si vogliono gli orari, nel formato 'aaaa-mm-dd'
+ * @param dalle: orario iniziale a cui si è interessati, nel formato militare senza separatori. Es: '1600' = 16:00
+ * @param alle: orario finale a cui si è interessati, nel formato militare senza separatori. Es: '1600' = 16:00
+ * @returns lista di aule, nel formato specificato.
  */
-router.get('/aulaLiberaDalleAlle', function (req, res) {
+router.get('/auleLibereDalleAlle', function (req, res) {
     var formato = req.body.formato;
     var giorno = req.body.giorno;
     var dalle = req.body.dalle;
@@ -74,14 +83,14 @@ router.get('/aulaLiberaDalleAlle', function (req, res) {
 });
 
 /**
- * @description Restituisce una lista di lezioni per un'aula specificata in un giorno specificato. Il formato dell'output è specificato nei parametri.
+ * @description Restituisce una lista di lezioni per un'aula specificata in un giorno specificato. 
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
  * @param giorno: giorno in cui si vogliono gli orari, nel formato 'dd-mm-aaaa'
  * @param aula: codice per l'aula per la quale si vogliono gli orari, es: 'B107'
  * 
  * @returns lista di lezioni, nel formato specificato.
  */
-router.get('/aulaLiberaDalleAlle', function (req, res) {
+router.get('/orariAula', function (req, res) {
     var formato = req.body.formato;
     var giorno = req.body.giorno;
     var aula = req.body.aula;
@@ -91,9 +100,12 @@ router.get('/aulaLiberaDalleAlle', function (req, res) {
     res.end(result);
 });
 
+
+//************************* SERVIZI BASE */
+
+
+
 //Start listening on port
 app.listen(port, function () {
     console.log('Example app listening on port '+ port);
 });
-
-
