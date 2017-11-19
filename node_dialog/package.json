@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/LorenzoGas/aulando.ayy/issues"
   },
-  "homepage": "https://github.com/LorenzoGas/aulando.ayy#readme"
+  "homepage": "https://github.com/LorenzoGas/aulando.ayy#readme",
+  "dependencies": {
+    "apiai": "^4.0.3",
+    "express": "^4.16.2",
+    "xmlhttprequest": "^1.8.0"
+  }
 }
