@@ -160,7 +160,6 @@ var listaMaterie = function(dipartimento){
 exports.aulaLibera = aulaLibera;
 exports.aulaLiberaDalleAlle = aulaLiberaDalleAlle;
 exports.orarioAula = orarioAula;
-s
 exports.listaAule = listaAule;
 exports.listaDipartimenti = listaDipartimenti;
 exports.listaDocenti = listaDocenti;
