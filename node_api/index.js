@@ -2,6 +2,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mysql = require('database.js');
+var path    = require("path");
 
 var param_error         = "C'è un errore nella sintassi dei parametri! La sintassi corretta è la seguente:";
 var p_o                 = "[opzionale]";
@@ -12,6 +13,8 @@ var param_aula          = "aula = codice";
 var param_ora           = "ora = hh:mm";
 var param_dalle         = "dalle = hh:mm";
 var param_alle          = "alle = hh:mm";
+
+var benvenuto = "<h1>Benvenuto nelle API di aulando.ayy!</h1> <p>Grazie a queste API gratuite potrai avere a disposizione informazioni riguardo gli orari delle varie aule nei vari dipartmenti dell'università di trento.</p><p>Ecco la lista dei diversi servizi: <ul><li>/auleLibere -> lista delle aule libere in un dato dipartimento, un determinato giorno e alla determinata ora. <br> Parametri:<br>'formato': formato dell'output, JSON o XML; default JSON</li></ul>";
 // instantiate express
 var app = express();
 var router = express.Router();
@@ -39,9 +42,8 @@ app.use(function (req, res, next) {
 
 //HOMEPAGE
 app.all('/', function (req, res) {
-    res.send('Benvenuto nelle Api di Aulando.ayy!');
+    res.sendFile(path.join(__dirname+'/home.html'));
 });
-
 
 /************************************ SERVIZI COMPLESSI ********************************* */
 /**
