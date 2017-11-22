@@ -20,6 +20,7 @@
   "dependencies": {
     "apiai": "^4.0.3",
     "express": "^4.16.2",
+    "request": "^2.83.0",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {}
