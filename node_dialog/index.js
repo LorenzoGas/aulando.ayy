@@ -5,17 +5,15 @@ var dialogflow_module = require('./modules/dialogflow.js');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 // Main server api URL
-var URL = 'http://localhost:8080'; //'https://www.google.it';
+//var URL = 'https://easyroom.unitn.it/Orario/list_call.php?form-type=corso&anno=2017&corso=0514G&anno2=P0405%7C3&date=12-10-2017&_lang=it&ar_codes_=EC0514G_145005_145005/2_N0_BRUNA%7CEC0514G_145015_145015/1_QUAGL_LEZ%7CEC0514G_145024_145024/1_N0_BOUQU%7CEC0514G_145090_145090/1_N0_DEAN%7CEC0514G_145412_145412/1_N0_CASAT%7CEC0514G_145932_145932/1_N0_COLLA%7CEC0514G_145005_145005/1_N0_BRUNA&ar_select_=true%7Ctrue%7Ctrue%7Ctrue%7Ctrue%7Ctrue%7Ctrue';
+var URL = 'https://aulando-ayy.herokuapp.com/';
 
 // Possibili actions restituite dal modulo dialogflow, corrispondono ai metodi da chiamare sul node_api
 var actions = {};
-actions.aule_libere_from_hour = "aule_libere_from_hour";
-actions.aule_libere_for_hour = "aule_libere_for_hour";
-
-var actions2 = {};
-actions2.auleLibere = 'auleLibere';
-actions2.aulaLiberaDalleAlle = 'aulaLiberaDalleAlle';
-actions2.orarioAula = 'orarioAula';
+actions.auleLibere = 'auleLibere';
+actions.auleLibereDalleAlle = 'auleLibereDalleAlle';
+actions.auleLiberePer = 'auleLiberePer';
+actions.orarioAula = 'orarioAula';
 
 // Formato desiderato dal server node_api
 var formato = "json";
@@ -41,12 +39,14 @@ router.get('/', function (req, res) {
  */
 router.get('/resolveQuery', function (req, res) {
 
-    console.log('Request received');
+    console.log('\nRequest received');
     
     //Ottieni parametri dal client
     var formato = "json";
-    var id = req.query.id || 0;
-    var requestQuery = req.body.requestQuery || 'TODO'; // TODO gestione errori
+    var id = req.query.id || makeid();
+    var requestQuery = req.query.requestQuery || 'TODO'; // TODO gestione errori
+
+    console.log(id, requestQuery);
 
     dialogflow_module.requestApiAi(
         id,
@@ -54,6 +54,16 @@ router.get('/resolveQuery', function (req, res) {
         (out) => { dispatcher(res, out) }
     );
 });
+
+function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 10; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
 
 // middleware route to support CORS and preflighted requests
 app.use(function (req, res, next) {
@@ -92,41 +102,70 @@ app.listen(port, function () {
 
 
 function dispatcher(res, out) {
-    console.log(out.action);
-    if(!out.actionIncomplete) {
-        var data = {};
-        var action;        
+    console.log(out);
+    if(!(out.action == 'input.unknown' || out.actionIncomplete)) {
+        var data = {};   
+        var action;
         switch(out.action) {
-            case actions2.auleLibere:
+            case actions.auleLibere:
+                action = actions.auleLibere;
                 // Inizializzo parametri della richiesta
                 data.formato = formato;
-                data.giorno = out.parameters.giorno;
-                data.ora = out.parameters.ora;
-                action = actions2.auleLibere;
+                             
+                var dateArr = getDate(out.timestamp, out.parameters.date, out.parameters.time);
+                data.giorno = dateArr.giorno;
+                data.ora = dateArr.ora;
+
+                data.dipartimento = out.parameters.dipartimento;
             break;
 
-            case actions2.aulaLiberaDalleAlle:
+            case actions.auleLibereDalleAlle:
+                action = actions.auleLibereDalleAlle;
                 // Inizializzo parametri della richiesta
                 data.formato = formato;
-                data.giorno = out.parameters.giorno;
-                data.dalle = out.parameters.dalle;
-                data.alle = out.parameters.alle;
-                action = actions2.aulaLiberaDalleAlle;
+                
+                var dateArr = getDate(out.timestamp, out.parameters.date);
+                data.giorno = dateArr.giorno;
+                
+                var dalleAlle = out.parameters.time-period.split('/');
+                data.dalle = dalleAlle[0];
+                data.alle = dalleAlle[1];
+
+                data.dipartimento = out.parameters.dipartimento;
+            break;
+
+            case actions.auleLiberePer:
+                action = actions.auleLibereDalleAlle;
+                // Inizializzo parametri della richiesta
+                data.formato = formato;
+
+                var dateArr = getDate(out.timestamp, out.parameters.date);
+                data.giorno = dateArr.giorno;
+                data.dalle = dateArr.ora;
+                data.alle = getHourFromOffset(data.dalle, out.parameters.duration.amount);  
+
+                data.dipartimento = out.parameters.dipartimento;
             break;
 
             case actions.orarioAula:
+                action = actions.orarioAula;
                 // Inizializzo parametri della richiesta
                 data.formato = formato;
-                data.giorno = out.parameters.giorno;
+
+                var dateArr = getDate(out.timestamp, out.parameters.date);
+                data.giorno = dateArr.giorno;
+                
                 data.aula = out.parameters.aula;
-                action = actions2.orarioAula;
+                data.dipartimento = out.parameters.dipartimento;
             break;
         }
+
+        console.log(data);
 
         send(URL, action, data, (result) => { 
             out.result = result;
             res.send(out);
-            res.end(); }); 
+            res.end(); });
     }
     else {
         res.send(out);
@@ -134,21 +173,43 @@ function dispatcher(res, out) {
     }
 }
 
+function getDate(timestamp, paramDate, paramTime){
+    var date = new Date(timestamp);
+    var giorno = date.toLocaleDateString('it-IT');
+    var ora = date.toLocaleTimeString('it-IT');
+
+    if(paramDate) {
+        giorno = paramDate;
+    }
+    if(paramTime) {
+        ora = paramTime;
+    }
+    console.log(giorno, ora);
+
+    return {giorno, ora};
+}
+
+function getHourFromOffset(hour, offset) {
+    var time = hour.split(':');
+    return (parseInt(time[0]) + offset) + ':' + time[1] + ':' + time[2];
+}
+
 function send(URL, action, data, callback) {
     // construct an HTTP request
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', URL + action, true);
+    //xhr.open('GET', URL, true);
+    xhr.open('GET', URL+action, true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
     // send the collected data as JSON
     xhr.send(JSON.stringify(data));
 
-    console.log('requested to', URL);
+    console.log('Requested to', URL+action);
 
     xhr.onloadend = function () 
     {
         var result=xhr.responseText;
-        console.log(result);
+        //console.log(result);
         callback(result)
     };
 }
