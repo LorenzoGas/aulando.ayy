@@ -40,7 +40,7 @@
     height: 0; 
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    border-left: 10px solid rgb(3, 169, 244);
+    border-left: 10px solid #4caf50;
     display:inline-block;
     margin: -10px -5px 0px;
 }
