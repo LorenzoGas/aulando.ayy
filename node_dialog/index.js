@@ -2,7 +2,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var dialogflow_module = require('./modules/dialogflow.js');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var tools = require('./modules/functions.js');
 
 // Main server api URL
 //var URL = 'https://easyroom.unitn.it/Orario/list_call.php?form-type=corso&anno=2017&corso=0514G&anno2=P0405%7C3&date=12-10-2017&_lang=it&ar_codes_=EC0514G_145005_145005/2_N0_BRUNA%7CEC0514G_145015_145015/1_QUAGL_LEZ%7CEC0514G_145024_145024/1_N0_BOUQU%7CEC0514G_145090_145090/1_N0_DEAN%7CEC0514G_145412_145412/1_N0_CASAT%7CEC0514G_145932_145932/1_N0_COLLA%7CEC0514G_145005_145005/1_N0_BRUNA&ar_select_=true%7Ctrue%7Ctrue%7Ctrue%7Ctrue%7Ctrue%7Ctrue';
@@ -39,11 +39,12 @@ router.get('/', function (req, res) {
  */
 router.get('/resolveQuery', function (req, res) {
 
-    console.log('\nRequest received');
+    console.log('\n');
+    console.log('Request received');
     
     //Ottieni parametri dal client
     var formato = "json";
-    var id = req.query.id || makeid();
+    var id = req.query.id || tools.makeId();
     var requestQuery = req.query.requestQuery || 'TODO'; // TODO gestione errori
 
     console.log(id, requestQuery);
@@ -54,16 +55,6 @@ router.get('/resolveQuery', function (req, res) {
         (out) => { dispatcher(res, out) }
     );
 });
-
-function makeid() {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (var i = 0; i < 10; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
-}
 
 // middleware route to support CORS and preflighted requests
 app.use(function (req, res, next) {
@@ -102,7 +93,9 @@ app.listen(port, function () {
 
 
 function dispatcher(res, out) {
+    console.log('\n');
     console.log(out);
+    
     if(!(out.action == 'input.unknown' || out.actionIncomplete)) {
         var data = {};   
         var action;
@@ -112,7 +105,7 @@ function dispatcher(res, out) {
                 // Inizializzo parametri della richiesta
                 data.formato = formato;
                              
-                var dateArr = getDate(out.timestamp, out.parameters.date, out.parameters.time);
+                var dateArr = tools.getDate(out.timestamp, out.parameters.date, out.parameters.time);
                 data.giorno = dateArr.giorno;
                 data.ora = dateArr.ora;
 
@@ -124,7 +117,7 @@ function dispatcher(res, out) {
                 // Inizializzo parametri della richiesta
                 data.formato = formato;
                 
-                var dateArr = getDate(out.timestamp, out.parameters.date);
+                var dateArr = tools.getDate(out.timestamp, out.parameters.date);
                 data.giorno = dateArr.giorno;
                 
                 var dalleAlle = out.parameters.time-period.split('/');
@@ -139,10 +132,10 @@ function dispatcher(res, out) {
                 // Inizializzo parametri della richiesta
                 data.formato = formato;
 
-                var dateArr = getDate(out.timestamp, out.parameters.date);
+                var dateArr = tools.getDate(out.timestamp, out.parameters.date);
                 data.giorno = dateArr.giorno;
                 data.dalle = dateArr.ora;
-                data.alle = getHourFromOffset(data.dalle, out.parameters.duration.amount);  
+                data.alle = tools.getHourFromOffset(data.dalle, out.parameters.duration.amount);  
 
                 data.dipartimento = out.parameters.dipartimento;
             break;
@@ -152,7 +145,7 @@ function dispatcher(res, out) {
                 // Inizializzo parametri della richiesta
                 data.formato = formato;
 
-                var dateArr = getDate(out.timestamp, out.parameters.date);
+                var dateArr = tools.getDate(out.timestamp, out.parameters.date);
                 data.giorno = dateArr.giorno;
                 
                 data.aula = out.parameters.aula;
@@ -162,7 +155,7 @@ function dispatcher(res, out) {
 
         console.log(data);
 
-        send(URL, action, data, (result) => { 
+        tools.httpRequest(URL, action, data, (result) => { 
             out.result = result;
             res.send(out);
             res.end(); });
@@ -171,46 +164,5 @@ function dispatcher(res, out) {
         res.send(out);
         res.end();
     }
-}
-
-function getDate(timestamp, paramDate, paramTime){
-    var date = new Date(timestamp);
-    var giorno = date.toLocaleDateString('it-IT');
-    var ora = date.toLocaleTimeString('it-IT');
-
-    if(paramDate) {
-        giorno = paramDate;
-    }
-    if(paramTime) {
-        ora = paramTime;
-    }
-    console.log(giorno, ora);
-
-    return {giorno, ora};
-}
-
-function getHourFromOffset(hour, offset) {
-    var time = hour.split(':');
-    return (parseInt(time[0]) + offset) + ':' + time[1] + ':' + time[2];
-}
-
-function send(URL, action, data, callback) {
-    // construct an HTTP request
-    var xhr = new XMLHttpRequest();
-    //xhr.open('GET', URL, true);
-    xhr.open('GET', URL+action, true);
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-
-    // send the collected data as JSON
-    xhr.send(JSON.stringify(data));
-
-    console.log('Requested to', URL+action);
-
-    xhr.onloadend = function () 
-    {
-        var result=xhr.responseText;
-        //console.log(result);
-        callback(result)
-    };
 }
 
