@@ -14,7 +14,6 @@ var param_ora           = "ora = hh:mm";
 var param_dalle         = "dalle = hh:mm";
 var param_alle          = "alle = hh:mm";
 
-var benvenuto = "<h1>Benvenuto nelle API di aulando.ayy!</h1> <p>Grazie a queste API gratuite potrai avere a disposizione informazioni riguardo gli orari delle varie aule nei vari dipartmenti dell'università di trento.</p><p>Ecco la lista dei diversi servizi: <ul><li>/auleLibere -> lista delle aule libere in un dato dipartimento, un determinato giorno e alla determinata ora. <br> Parametri:<br>'formato': formato dell'output, JSON o XML; default JSON</li></ul>";
 // instantiate express
 var app = express();
 var router = express.Router();
@@ -50,7 +49,7 @@ app.all('/', function (req, res) {
  * @description Restituisce una lista di aule disponibili per un'ora specificata ed un dato dipartimento.
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
  * @param giorno: giorno in cui si vogliono gli orari, nel formato 'dd-mm-aaaa'
- * @param ora: ora a cui si è interessati, nel formato militare senza separatori. Es: '1600' = 16:00
+ * @param ora: ora a cui si è interessati, nel formato militare. Es: 16:00
  * @param dipartimento codice del dipartimento desiderato
  * @return lista di aule libere 
  */
@@ -62,7 +61,7 @@ app.all('/auleLibere',function (req, res) {
     var dipartimento = req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;
     var result  = param_error + "\n" + p_o + param_formato + "\n" + param_dipartimento +"\n" + param_giorno + "\n" + param_ora;
     
-    if(giorno == null || ora == null)
+    if(giorno == null || ora == null || dipartimento == null)
         check = false;
     if(check){
         ora = ora.replace(':','');
@@ -80,7 +79,7 @@ app.all('/auleLibere',function (req, res) {
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
  * @param dipartimento codice del dipartimento desiderato
  * @param giorno: giorno in cui si vogliono gli orari, nel formato 'aaaa-mm-dd'
- * @param dalle: orario iniziale a cui si è interessati, nel formato militare senza separatori. Es: '1600' = 16:00
+ * @param dalle: orario iniziale a cui si è interessati, nel formato militare. Es: 16:00
  * @param alle: orario finale a cui si è interessati, nel formato militare senza separatori. Es: '1600' = 16:00
  * @returns lista di aule, nel formato specificato.
  */
@@ -110,8 +109,8 @@ app.all('/auleLibereDalleAlle', function (req, res) {
  * @description Restituisce una lista di lezioni per un'aula specificata in un giorno specificato. 
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
  * @param giorno: giorno in cui si vogliono gli orari, nel formato 'dd-mm-aaaa'
- * @param aula: codice per l'aula per la quale si vogliono gli orari, es: 'B107'
- * 
+ * @param aula: nome per l'aula per la quale si vogliono gli orari, es: 'Aula PC B107'
+ * @param dipartimento codice del dipartimento desiderato
  * @returns lista di lezioni, nel formato specificato.
  */
 app.all('/orariAula', function (req, res) {
@@ -119,12 +118,13 @@ app.all('/orariAula', function (req, res) {
     var formato = req.query.formato != null ?  req.query.formato : req.body.formato;
     var aula = req.query.aula != null ?  req.query.aula : req.body.aula;
     var giorno = req.query.giorno != null ?  req.query.giorno : req.body.giorno;
-    var result  = param_error + "\n" + p_o + param_formato + "\n" + param_aula +"\n" + param_giorno;
+    var dipartimento = req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;
+    var result  = param_error + "\n" + p_o + param_formato + "\n" + param_aula +"\n" + param_giorno +"\n" + param_dipartimento;
 
-    if(aula == null || giorno == null)
+    if(aula == null || giorno == null || dipartimento == null)
         check = false;
     if(check == true){
-        mysql.orarioAula(aula,giorno,(out)=>{
+        mysql.orarioAula(dipartimento,aula,giorno,(out)=>{
             res.send(out);
             res.end();
         });
@@ -143,7 +143,6 @@ app.all('/listaDipartimenti',function (req, res) {
     var check   = true;
     var formato = req.query.formato != null ?  req.query.formato : req.body.formato;
     var result  = param_error + "\n" + p_o + param_formato;
-    console.log("Formato: " + formato);
     if(check){
         mysql.listaDipartimenti((out) => { 
             result = out; 
@@ -163,7 +162,7 @@ app.all('/listaAule',function (req, res) {
     var check   = true;
     var formato = req.query.formato != null ?  req.query.formato : req.body.formato;
     var dipartimento = req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;
-    var result  = "There is an error in the syntax of your paramenter! \nThe correct syntax is the following: \n[optional] formato=JSON/XML\ndipartimento=codice";
+    var result  = param_error + "\n" + p_o + param_formato + "\n" + param_dipartimento;
     if(dipartimento == null)
         check = false;
     if(check){
