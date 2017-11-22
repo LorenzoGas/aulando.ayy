@@ -32,13 +32,14 @@ AND 	id NOT IN(
 			(l.inizio >= 'X' AND l.inizio < 'Y'))
 	GROUP BY a.nome)
 
-/* Orario aula X, il giorno Y */
-SELECT d.nome, m.nome, l.inizio, l.fine
+/* Orario aula X, il giorno Y, dipartimento D */
+SELECT d.cognomenome, m.nome, l.inizio, l.fine
 FROM Aula a
+	JOIN Dipartimento d ON a.dipartimento = d.id AND d.id = 'D'
 	JOIN AulaLezione al ON a.id = al.aula
 	JOIN Lezione l ON al.lezione = l.id
 	JOIN Materia m ON l.materia = m.id 
 	JOIN Docente d ON l.docente = d.id
-WHERE	a.codice = 'X'
+WHERE	a.nome = 'X'
 AND		l.giorno = 'Y'
 ORDER BY l.inizio
