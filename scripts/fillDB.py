@@ -20,13 +20,9 @@ def fillDocenti ():
 
         for anno in elenco_docenti:
             for docente in anno['elenco']:
-
-                separator = docente['label'].find(" ")
-                cognome = docente['label'][:separator]
-                nome = docente['label'][separator+1:]
                 #INSERT docente
                 with connection.cursor() as cursor:
-                    sql = "INSERT IGNORE INTO Docente (codice, nome, cognome) VALUES ('%s','%s','%s');" % (docente['valore'].replace("'","''"), nome.replace("'","''").decode('utf-8').title(), cognome.replace("'","''").decode('utf-8').title())
+                    sql = "INSERT IGNORE INTO Docente (codice, cognomenome) VALUES ('%s','%s');" % (docente['valore'].replace("'","''"), docente['label'].replace("'","''").decode('utf-8').title())
                     cursor.execute(sql)
                 connection.commit()
 
@@ -147,13 +143,12 @@ def fillMaterieAuleLezioni ():
 
                         # ------- LEZIONE
                         #SELECT id_docente
-                        cognome = orario[str(i)]['docente'][:orario[str(i)]['docente'].find(" ")] #prima di ' '
                         if orario[str(i)]['docente'].find(',') != -1:
-                            nome = orario[str(i)]['docente'][orario[str(i)]['docente'].find(" ")+1 : orario[str(i)]['docente'].find(',')] #dopo ' ' e prima di ',' se sono piu docenti
+                            cognomenome = orario[str(i)]['docente'][: orario[str(i)]['docente'].find(',')] #prima di ',' se sono piu docenti
                         else:
-                            nome = orario[str(i)]['docente'][orario[str(i)]['docente'].find(" ")+1 :] #dopo ' '
+                            cognomenome = orario[str(i)]['docente']
                         with connection.cursor() as cursor:
-                            sql = "SELECT id FROM Docente WHERE cognome = '%s' AND nome='%s';" % (cognome.replace("'","''"), nome.replace("'","''"))
+                            sql = "SELECT id FROM Docente WHERE cognomenome = '%s';" % (cognomenome.replace("'","''"))
                             cursor.execute(sql)
                             res = cursor.fetchone()
                             if res is not None:
@@ -240,7 +235,7 @@ def fillMaterieAuleLezioni ():
 
 #Connect to the database
 connection = pymysql.connect(host='localhost',user='root', password='', db='aulando')
-'''
+
 if fillDipartimenti() == -1:
     print "errore fillDipartimenti"
 print "done fillDipartimenti"
@@ -252,7 +247,7 @@ print "done fillDocenti"
 if fillCorsiSubcorsi() == -1:
     print "errore fillCorsiSubcorsi" # TODO separare anno da codice subcorso
 print "done fillCorsiSubcorsi"
-'''
+
 if fillMaterieAuleLezioni() == -1:
     print "errore fillMaterieAuleLezioni"
 print "done fillMaterieAuleLezioni"
