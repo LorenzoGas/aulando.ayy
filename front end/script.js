@@ -12,7 +12,7 @@ var appentNewText = function (txt, source) {
     var msg = source.html().replace("^", txt);
     var minutes = new Date().getMinutes();
     var hours = new Date().getHours();
-    msg = msg.replace("?", hours + ":" + minutes);
+    msg = msg.replace("§", hours + ":" + minutes);
     $(msg).appendTo("#chat-container");
 }
 
@@ -22,7 +22,8 @@ var send = function (txt) {
     if (session < 0) {
         var jqxhr = $.get("https://aulando-ayy-dialogflow-api.herokuapp.com/dialogflow_api/resolveQuery?requestQuery=" + txt, function () {})
             .done(function (res) {
-
+                console.log(res);
+                appentNewText(res.speech,$("#message-receive-text"));
             })
             .fail(function (res) {
                 $('#error').modal();
