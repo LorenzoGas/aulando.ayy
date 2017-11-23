@@ -22,7 +22,11 @@ def fillDocenti ():
             for docente in anno['elenco']:
                 #INSERT docente
                 with connection.cursor() as cursor:
-                    sql = "INSERT IGNORE INTO Docente (codice, cognomenome) VALUES ('%s','%s');" % (docente['valore'].replace("'","''"), docente['label'].replace("'","''").decode('utf-8').title())
+                    sql = """INSERT INTO Docente (codice, cognomenome) 
+                                    SELECT '%s','%s'FROM DUAL 
+                                    WHERE NOT EXISTS (SELECT * FROM Docente 
+                                        WHERE codice ='%s' AND cognomenome ='%s') 
+                                    LIMIT 1""" % (docente['valore'].replace("'","''"), docente['label'].replace("'","''").decode('utf-8').title(), docente['valore'].replace("'","''"), docente['label'].replace("'","''").decode('utf-8').title())
                     cursor.execute(sql)
                 connection.commit()
 
@@ -43,7 +47,11 @@ def fillCorsiSubcorsi ():
             for corso in anno['elenco']:
                 #INSERT corso
                 with connection.cursor() as cursor:
-                    sql = "INSERT IGNORE INTO Corso (codice, nome) VALUES ('%s','%s');" % (corso['valore'].replace("'","''"), corso['label'].replace("'","''"))
+                    sql = """INSERT INTO Corso (codice, nome) 
+                                    SELECT '%s','%s'FROM DUAL 
+                                    WHERE NOT EXISTS (SELECT * FROM Corso 
+                                        WHERE codice ='%s' AND nome ='%s') 
+                                    LIMIT 1""" % (corso['valore'].replace("'","''"), corso['label'].replace("'","''"), corso['valore'].replace("'","''"), corso['label'].replace("'","''"))
                     cursor.execute(sql)
                 connection.commit()
 
@@ -54,8 +62,12 @@ def fillCorsiSubcorsi ():
                     id_corso = cursor.fetchone()[0]
                 for subcorso in corso['elenco_anni']:   
                     #INSERT subcorso
-                    with connection.cursor() as cursor:
-                        sql = "INSERT IGNORE INTO Subcorso (codice, nome, corso) VALUES ('%s','%s',%d);" % (subcorso['valore'].replace("'","''"), subcorso['label'].replace("'","''").decode('utf-8').lower(), id_corso)
+                    with connection.cursor() as cursor:       
+                        sql = """INSERT INTO Subcorso (codice, nome, corso) 
+                                    SELECT '%s','%s',%d FROM DUAL 
+                                    WHERE NOT EXISTS (SELECT * FROM Subcorso 
+                                        WHERE codice ='%s' AND nome ='%s' AND corso=%d) 
+                                    LIMIT 1""" % (subcorso['valore'].replace("'","''"), subcorso['label'].replace("'","''").decode('utf-8').lower(), id_corso, subcorso['valore'].replace("'","''"), subcorso['label'].replace("'","''").decode('utf-8').lower(), id_corso)
                         cursor.execute(sql)
                     connection.commit()
 
@@ -75,7 +87,11 @@ def fillDipartimenti ():
         for dipartimento in elenco_sedi:
             #INSERT dipartimento
             with connection.cursor() as cursor:
-                sql = "INSERT IGNORE INTO Dipartimento (codice, nome) VALUES ('%s','%s');" % (dipartimento['valore'].replace("'","''"), dipartimento['label'].replace("'","''"))
+                sql = """INSERT INTO Dipartimento (codice, nome) 
+                                    SELECT '%s','%s' FROM DUAL 
+                                    WHERE NOT EXISTS (SELECT * FROM Dipartimento 
+                                        WHERE codice ='%s' AND nome ='%s') 
+                                    LIMIT 1""" % (dipartimento['valore'].replace("'","''"), dipartimento['label'].replace("'","''"), dipartimento['valore'].replace("'","''"), dipartimento['label'].replace("'","''"))
                 cursor.execute(sql)
             connection.commit()
         
@@ -162,13 +178,13 @@ def fillMaterieAuleLezioni ():
                         #    id_materia = cursor.fetchone()[0]
                         #INSERT lezione
                         data = datetime.datetime.strptime(orario[str(i)]['data'], '%d-%m-%Y')
-                        ora_inizio = orario[str(i)]['ora_inizio'].replace(":", "")
-                        ora_fine = orario[str(i)]['ora_fine'].replace(":", "")
+                        ora_inizio = orario[str(i)]['ora_inizio'] + ":00"
+                        ora_fine = orario[str(i)]['ora_fine'] + ":00"
                         with connection.cursor() as cursor:
                             sql = """INSERT INTO Lezione (docente, materia, tipologia, inizio, fine, giorno)
-                                SELECT %d, %d, '%s', %s, %s, '%s' FROM DUAL 
+                                SELECT %d, %d, '%s', '%s', '%s', '%s' FROM DUAL 
                                 WHERE NOT EXISTS (SELECT * FROM Lezione 
-                                    WHERE docente =%d AND materia =%d AND tipologia ='%s' AND inizio =%s AND fine =%s AND giorno ='%s') 
+                                    WHERE docente =%d AND materia =%d AND tipologia ='%s' AND inizio ='%s' AND fine ='%s' AND giorno ='%s') 
                                 LIMIT 1""" % (id_docente, id_materia, orario[str(i)]['tipo'], ora_inizio, ora_fine, data.strftime('%Y-%m-%d'), id_docente, id_materia, orario[str(i)]['tipo'], ora_inizio, ora_fine, data.strftime('%Y-%m-%d'))
                             cursor.execute(sql)
                         connection.commit()
@@ -185,11 +201,11 @@ def fillMaterieAuleLezioni ():
                             else: 
                                 continue
                         #INSERT aule
-                        nome_aula = orario[str(i)]['aula'][:orario[str(i)]['aula'].find('[')-1] #prima di " [Dip"
+                        nome_aula = orario[str(i)]['aula'][:orario[str(i)]['aula'].find('[')-1].replace("(","").replace(")","") #prima di " [Dip"
                         codici_aule = orario[str(i)]['codice_aula'].split(", ")
                         for aula in codici_aule:
                             #INSERT aula
-                            codice_aula = aula[aula.find('/')+1:] #dopo '/'
+                            codice_aula = aula[aula.find('/')+1:].replace("(","").replace(")","") #dopo '/'
                             with connection.cursor() as cursor:
                                 sql = """INSERT INTO Aula (nome, codice, dipartimento) 
                                     SELECT '%s','%s',%d FROM DUAL 
@@ -204,7 +220,7 @@ def fillMaterieAuleLezioni ():
                             #SELECT id_lezione
                             with connection.cursor() as cursor:
                                 sql = """SELECT id FROM Lezione 
-                                    WHERE docente =%d AND materia =%d AND tipologia ='%s' AND inizio =%s AND fine =%s AND giorno ='%s';
+                                    WHERE docente =%d AND materia =%d AND tipologia ='%s' AND inizio ='%s' AND fine ='%s' AND giorno ='%s';
                                     """ % (id_docente, id_materia, orario[str(i)]['tipo'], ora_inizio, ora_fine, data.strftime('%Y-%m-%d'))
                                 cursor.execute(sql)
                                 res = cursor.fetchone()
