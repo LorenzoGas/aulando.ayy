@@ -191,15 +191,23 @@ def fillMaterieAuleLezioni ():
 
                         # ------- AULE
                         #SELECT id_dipartimento
-                        dipartimento = orario[str(i)]['codice_aula'][:orario[str(i)]['codice_aula'].find('/')] #prima di '/'
+                        dipartimento = orario[str(i)]['aula'][orario[str(i)]['aula'].find('[')+1 : orario[str(i)]['aula'].find(']')].replace("'","''")
                         with connection.cursor() as cursor:
-                            sql = "SELECT id FROM Dipartimento WHERE codice = '%s';" % (dipartimento)
+                            sql = "SELECT id FROM Dipartimento WHERE nome = '%s';" % (dipartimento)
                             cursor.execute(sql)
                             res = cursor.fetchone()
                             if res is not None:
                                 id_dipartimento = res[0]
-                            else: 
-                                continue
+                            else:
+                                dipartimento = orario[str(i)]['codice_aula'][:orario[str(i)]['codice_aula'].find('/')]
+                                sql = "SELECT id FROM Dipartimento WHERE nome = '%s';" % (dipartimento)
+                                cursor.execute(sql)
+                                res = cursor.fetchone()
+                                if res is not None:
+                                    id_dipartimento = res[0]
+                                else:
+                                    print dipartimento + " non trovato " + orario[str(i)]['codice_aula'] + " " + orario[str(i)]['nome_insegnamento']
+                                    continue
                         #INSERT aule
                         nome_aula = orario[str(i)]['aula'][:orario[str(i)]['aula'].find('[')-1].replace("(","").replace(")","") #prima di " [Dip"
                         codici_aule = orario[str(i)]['codice_aula'].split(", ")
