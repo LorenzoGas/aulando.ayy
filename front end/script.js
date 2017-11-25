@@ -14,6 +14,8 @@ var appentNewText = function (txt, source) {
     var hours = new Date().getHours();
     msg = msg.replace("§", hours + ":" + minutes);
     $(msg).appendTo("#chat-container");
+    var div= $('#chat-container');
+    div.scrollTop(div.prop('scrollHeight'));
 }
 
 var send = function (txt) {
@@ -23,7 +25,9 @@ var send = function (txt) {
         var jqxhr = $.get("https://aulando-ayy-dialogflow-api.herokuapp.com/dialogflow_api/resolveQuery?requestQuery=" + txt, function () {})
             .done(function (res) {
                 console.log(res);
-                appentNewText(res.speech,$("#message-receive-text"));
+                appentNewText(res.speech + res.result,$("#message-receive-text"));
+                session=1;
+                cookie=res.sessionId;
             })
             .fail(function (res) {
                 $('#error').modal();
