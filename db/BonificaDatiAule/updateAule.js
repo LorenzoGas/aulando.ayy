@@ -6,7 +6,6 @@ function readData(nomeFile){
         if (err) {
           return console.log(err);
         }
-
         updateEntity(data);
     })
 }
@@ -36,7 +35,7 @@ function updateEntity(stringBody){
       var body = JSON.stringify(stringBody);
       
       var req = https.request(options, callback);
-      req.end(body);
+      req.end(stringBody);
 }
 
 readData('dati.json');

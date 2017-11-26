@@ -1,6 +1,6 @@
 fs = require('fs')
 var output  = fs.createWriteStream('dati.json', {
-  flags: 'a' // 'a' means appending (old data will be preserved)
+  //flags: 'a' // 'a' means appending (old data will be preserved)
 })
 fs.readFile('dati.csv', 'utf8', function (err,data) {
   if (err) {
@@ -43,7 +43,8 @@ fs.readFile('dati.csv', 'utf8', function (err,data) {
               "value": synonyms[0]
             }
 
-      result[0].entries.push(entries)
+      if(entries.value != "")
+        result[0].entries.push(entries)
   });
 
   output.write(JSON.stringify(result))
