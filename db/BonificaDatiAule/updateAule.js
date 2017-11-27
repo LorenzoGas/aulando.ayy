@@ -17,7 +17,7 @@ function updateEntity(stringBody){
         method: 'PUT',
         headers: {
             'Authorization': 'Bearer 4d32ec2123e749debf24e11c258a1760',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json; charset=utf-8'
           }
       };
       
