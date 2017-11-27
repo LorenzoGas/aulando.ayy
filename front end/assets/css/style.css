@@ -1,0 +1,88 @@
+.label-floating{
+    position: absolute !important;
+    bottom: 20px;
+    
+}
+@media  screen and (max-width: 800px) {
+    .label-floating{
+        width:100%;
+    }
+}
+.chat-container{
+    overflow: auto;
+    margin-top:40px;
+    height: 100%;
+    max-height: 440px;
+    position: static !important;
+    padding-bottom:50px;
+}
+.message-send{
+    align: right;
+    margin-top: 0px !important;
+    text-transform: none !important;
+    padding-right: 30px;    
+}
+.message-receive{
+    align: left;
+    margin-top: 0px !important;
+    text-transform: none !important;
+    max-width: 90%; 
+}
+.d-none{
+    visibility: hidden;
+}
+.message-send  .col-sm-11 {
+    padding-right:0px;
+    padding-left:0px;
+}
+.message-send  .col-sm-1 {
+    padding-right:0px;
+    padding-left:0px;
+}
+
+.message-receive  .col-sm-11 {
+    padding-right:0px;
+    padding-left:0px;
+}
+.message-receive  .col-sm-1 {
+    padding-right:0px;
+    padding-left:0px;
+}
+.message-send{
+    align: left;
+    margin-top: 0px !important;
+    text-transform: none !important;
+}
+.arrow-right {
+    width: 0; 
+    height: 0; 
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #4caf50;
+    margin: 5px 0px 0px -2px;
+}
+.arrow-left {
+    float:right;
+    width: 0; 
+    height: 0; 
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent; 
+    border-right:10px solid rgb(3, 169, 244);
+    margin: 5px -2px 0px 0px;
+}
+.info-msg{
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+    font-size: 0.75em;
+    font-style: italic;
+}
+.chat{
+    max-width: 100%;
+    position:absolute;
+    bottom: 0px;
+}
+
+.message-content{
+
+}
