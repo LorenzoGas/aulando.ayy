@@ -13,7 +13,7 @@ var actions = {};
 actions.auleLibere = 'auleLibere';
 actions.auleLibereDalleAlle = 'auleLibereDalleAlle';
 actions.auleLiberePer = 'auleLiberePer';
-actions.orarioAula = 'orarioAula';
+actions.orariAula = 'orariAula';
 
 // Formato desiderato dal server node_api
 var formato = "json";
@@ -120,9 +120,9 @@ function dispatcher(res, out) {
                 var dateArr = tools.getDate(out.timestamp, out.parameters.date);
                 data.giorno = dateArr.giorno;
                 
-                var dalleAlle = out.parameters.time-period.split('/');
-                data.dalle = dalleAlle[0];
-                data.alle = dalleAlle[1];
+                var dalleAlle = out.parameters.timeperiod.split('/');
+                data.dalle = tools.formatHour(dalleAlle[0]);
+                data.alle = tools.formatHour(dalleAlle[1]);
 
                 data.dipartimento = out.parameters.dipartimento;
             break;
@@ -140,8 +140,8 @@ function dispatcher(res, out) {
                 data.dipartimento = out.parameters.dipartimento;
             break;
 
-            case actions.orarioAula:
-                action = actions.orarioAula;
+            case actions.orariAula:
+                action = actions.orariAula;
                 // Inizializzo parametri della richiesta
                 data.formato = formato;
 

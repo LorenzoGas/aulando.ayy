@@ -1,23 +1,25 @@
 // IMPORTS
 var request = require('request');
+var moment = require('moment-timezone');
 
 // METODI PER LA GESTIONE DELLA FORMATTAZIONE DELLA DATA
 
 // A partire da una data in formato stringa (timestamp), genera due stringhe (giorno, ora) nella formattazione richiesta dal modulo DB
 // Se paramDate o paramTime sono non nulli, sono usati per la generazione del risultato
 function getDate(timestamp, paramDate, paramTime){
-    var date = new Date(timestamp);
-    var giorno = date.toLocaleDateString('it-IT');
-    var ora = date.toLocaleTimeString('it-IT');
+    var formatDate = 'YYYY/MM/DD';
+    var formatTime = 'HH:mm';
+    var giorno = moment.tz(timestamp, "Europe/Rome").format(formatDate);
+    var ora = moment.tz(timestamp, "Europe/Rome").format(formatTime);
 
     if(paramDate) {
         giorno = paramDate;
     }
     if(paramTime) {
         ora = paramTime;
+        ora = formatHour(ora);
     }
 
-    ora = formatHour(ora);
     console.log('\n');
     console.log(giorno, ora);
 
@@ -61,8 +63,9 @@ function httpRequest(URL, action, data, callback) {
         if(err) { 
             console.log(err); return;
         }
-      
-        console.log('Response code was',response.statusCode);
+        
+        response = JSON.parse(response.body);
+        console.log('Response JSON',response);
         callback(response);
     });
 }
