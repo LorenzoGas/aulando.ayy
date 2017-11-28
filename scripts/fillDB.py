@@ -103,6 +103,7 @@ def fillDipartimenti ():
 
 #returns 1 se finito correttamente, -1 se errore
 def fillMaterieAuleLezioni ():
+    link = ""
     try:
         with open('elenco_corsi') as json_data:
             elenco_corsi = json.load(json_data)
@@ -114,10 +115,11 @@ def fillMaterieAuleLezioni ():
                 for subcorso in corso['elenco_anni']:
 
                     #get orario da easyroom
-                    r = requests.get("https://easyroom.unitn.it/Orario/list_call.php?form-type=corso&anno=%s&corso=%s&anno2=%s&date=%s&_lang=it" % (anno['valore'], corso['valore'], subcorso['valore'], oggi)) 
+                    link = "https://easyroom.unitn.it/Orario/list_call.php?form-type=corso&anno=%s&corso=%s&anno2=%s&date=%s&_lang=it" % (anno['valore'], corso['valore'], subcorso['valore'], oggi)
+                    r = requests.get(link) 
                     orario = r.json()
 
-                    print "\nhttps://easyroom.unitn.it/Orario/list_call.php?form-type=corso&anno=%s&corso=%s&anno2=%s&date=%s&_lang=it" % (anno['valore'], corso['valore'], subcorso['valore'], oggi)
+                    print "\n" + link 
                     
                     i = 0
                     for i in xrange(orario['contains_data']):
@@ -206,11 +208,15 @@ def fillMaterieAuleLezioni ():
                                 if res is not None:
                                     id_dipartimento = res[0]
                                 else:
-                                    print dipartimento + " non trovato " + orario[str(i)]['codice_aula'] + " " + orario[str(i)]['nome_insegnamento']
+                                    print dipartimento + " NON TROVATO " + orario[str(i)]['codice_aula'] + " " + orario[str(i)]['nome_insegnamento']
+                                    print str(i) + ": " + link
                                     continue
                         #INSERT aule
                         nome_aula = orario[str(i)]['aula'][:orario[str(i)]['aula'].find('[')-1].replace("(","").replace(")","") #prima di " [Dip"
                         codici_aule = orario[str(i)]['codice_aula'].split(", ")
+                        if nome_aula[0] == ',':
+                            nome_aula = nome_aula[2:]
+                            codici_aule = codici_aule[2:]
                         for aula in codici_aule:
                             #INSERT aula
                             codice_aula = aula[aula.find('/')+1:].replace("(","").replace(")","") #dopo '/'
@@ -254,6 +260,7 @@ def fillMaterieAuleLezioni ():
         return 1
     except Exception as inst:
         print inst
+        print link
         return -1
 
 
@@ -269,7 +276,7 @@ if fillDocenti() == -1:
 print "done fillDocenti"
 
 if fillCorsiSubcorsi() == -1:
-    print "errore fillCorsiSubcorsi" # TODO separare anno da codice subcorso
+    print "errore fillCorsiSubcorsi"
 print "done fillCorsiSubcorsi"
 
 if fillMaterieAuleLezioni() == -1:

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 23, 2017 at 06:24 PM
+-- Generation Time: Nov 28, 2017 at 09:46 AM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.0.24
 
@@ -170,7 +170,7 @@ INSERT INTO `Aula` (`id`, `codice`, `nome`, `polo`, `piano`, `dipartimento`) VAL
 (126, 'A02', 'Aula 1B', NULL, NULL, 7),
 (127, 'A08', 'Aula 2B', NULL, NULL, 7),
 (128, 'A15', 'Aula 4A', NULL, NULL, 7),
-(129, '', ', Aula 2B', NULL, NULL, 7),
+(129, 'A08', 'Aula 2B', NULL, NULL, 7),
 (130, 'A05', 'Aula 1P', NULL, NULL, 7),
 (131, 'EAL', 'EALAB', NULL, NULL, 7),
 (132, 'A16', 'Aula 4B', NULL, NULL, 7),
