@@ -2,13 +2,16 @@ String.prototype.splice = function (idx, rem, str) {
     return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
 };
 
-$("#userInput").change(function () {
-    send(this.value);
-    appentNewText(this.value, $("#message-send-text"));
-    this.value = "";
-});
+$("#userInput").change(startProcedure);
 
-var appentNewText = function (txt, source) {
+function startProcedure() {
+    var value=$("#userInput").val();
+    send(value);
+    appentNewText(value, $("#message-send-text"));
+    $("#userInput").val("");
+}
+
+function appentNewText(txt, source) {
     var msg = source.html().replace("^", txt);
     var minutes = new Date().getMinutes();
     var hours = new Date().getHours();
@@ -18,7 +21,7 @@ var appentNewText = function (txt, source) {
     div.scrollTop(div.prop('scrollHeight'));
 }
 
-var send = function (txt) {
+function send(txt) {
     var cookie;
     var session = -1;
     if (session < 0) {
@@ -42,7 +45,7 @@ var send = function (txt) {
     }
 }
 
-var manageRes=function(res){
+function manageRes(res){
     var text=res.speech;
     if(res.result){
         text+="<ul>";

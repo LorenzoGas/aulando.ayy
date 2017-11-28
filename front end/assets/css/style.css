@@ -12,8 +12,7 @@
     overflow: auto;
     margin-top:40px;
     height: 100%;
-    max-height: 440px;
-    position: static !important;
+    /*max-height: 400px;*/
     padding-bottom:50px;
 }
 .message-send{
@@ -28,8 +27,14 @@
     text-transform: none !important;
     max-width: 90%; 
 }
+.left-container{
+    height:100$;
+}
 .d-none{
     visibility: hidden;
+}
+.send {
+    margin-top:50px !important;
 }
 .message-send  .col-sm-11 {
     padding-right:0px;
