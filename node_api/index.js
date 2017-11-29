@@ -35,6 +35,7 @@ app.use(function (req, res, next) {
         res.header('Access-Control-Allow-Methods', 'PUT, POST, DELETE');
         return res.status(200).json({});
     }
+    console.log("Query=",req.query,";\nBody: ",req.body);
     // make sure we go to the next routes
     next();
 });
@@ -80,7 +81,7 @@ app.all('/auleLibere',function (req, res) {
  * @param dipartimento codice del dipartimento desiderato
  * @param giorno: giorno in cui si vogliono gli orari, nel formato 'aaaa-mm-dd'
  * @param dalle: orario iniziale a cui si è interessati, nel formato militare. Es: 16:00
- * @param alle: orario finale a cui si è interessati, nel formato militare senza separatori. Es: '1600' = 16:00
+ * @param alle: orario finale a cui si è interessati, nel formato militare. Es: 16:00
  * @returns lista di aule, nel formato specificato.
  */
 app.all('/auleLibereDalleAlle', function (req, res) {
@@ -95,8 +96,6 @@ app.all('/auleLibereDalleAlle', function (req, res) {
     if(dipartimento == null || giorno == null || dalle == null || alle == null)
         check = false;
     if(check){
-        dalle = dalle.replace(':','');
-        alle = alle.replace(':','');
         mysql.auleLibereDalleAlle(dipartimento,giorno,dalle,alle,(out)=>{
             res.send(out);
             res.end();
@@ -120,11 +119,10 @@ app.all('/orariAula', function (req, res) {
     var giorno = req.query.giorno != null ?  req.query.giorno : req.body.giorno;
     var dipartimento = req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;
     var result  = param_error + "\n" + p_o + param_formato + "\n" + param_aula +"\n" + param_giorno +"\n" + param_dipartimento;
-
     if(aula == null || giorno == null || dipartimento == null)
         check = false;
     if(check == true){
-        mysql.orarioAula(dipartimento,aula,giorno,(out)=>{
+        mysql.orariAula(dipartimento,aula,giorno,(out)=>{
             res.send(out);
             res.end();
         });
@@ -145,8 +143,7 @@ app.all('/listaDipartimenti',function (req, res) {
     var result  = param_error + "\n" + p_o + param_formato;
     if(check){
         mysql.listaDipartimenti((out) => { 
-            result = out; 
-            res.send(result);
+            res.send(out);
             res.end();
         });
     }else
@@ -167,8 +164,7 @@ app.all('/listaAule',function (req, res) {
         check = false;
     if(check){
         mysql.listaAule((dipartimento,out) => { 
-            result = out; 
-            res.send(result);
+            res.send(out);
             res.end();
         });
     }else
@@ -190,8 +186,7 @@ app.all('/listaDocenti',function (req, res) {
         check = false;
     if(check){
         mysql.listaDocenti((dipartimento,out) => { 
-            result = out; 
-            res.send(result);
+            res.send(out);
             res.end();
         });
     }else
@@ -212,8 +207,7 @@ app.all('/listaCorsi',function (req, res) {
         check = false;
     if(check){
         mysql.listaCorsi((dipartimento,out) => { 
-            result = out; 
-            res.send(result);
+            res.send(out);
             res.end();
         });
     }else
@@ -235,8 +229,7 @@ app.all('/listaSubcorsi',function (req, res) {
         check = false;
     if(check){
         mysql.listaSubcorsi((dipartimento,out) => { 
-            result = out; 
-            res.send(result);
+            res.send(out);
             res.end();
         });
     }else
