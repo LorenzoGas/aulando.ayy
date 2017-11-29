@@ -65,7 +65,6 @@ app.all('/auleLibere',function (req, res) {
     if(giorno == null || ora == null || dipartimento == null)
         check = false;
     if(check){
-        ora = ora.replace(':','');
         mysql.auleLibere(dipartimento,giorno,ora,(out) =>{
             res.send(out);
             res.end();

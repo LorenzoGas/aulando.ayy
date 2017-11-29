@@ -13,7 +13,7 @@ WHERE 	a.id NOT IN(
 	AND		l.inizio 	<= 'X'
 	AND		l.fine 		> 'X')
 GROUP BY a.nome
-ORDER BY IFNULL(MIN(l.inizio),'2400') DESC
+ORDER BY IFNULL(MIN(l.inizio),'24:00') DESC
 
 	
 
@@ -35,7 +35,7 @@ AND 	id NOT IN(
 /* Orario aula X, il giorno Y, dipartimento D */
 SELECT d.cognomenome, m.nome, l.inizio, l.fine
 FROM Aula a
-	JOIN Dipartimento d ON a.dipartimento = d.id AND d.id = 'D'
+	JOIN Dipartimento di ON a.dipartimento = di.id AND di.id = 'D'
 	JOIN AulaLezione al ON a.id = al.aula
 	JOIN Lezione l ON al.lezione = l.id
 	JOIN Materia m ON l.materia = m.id 
