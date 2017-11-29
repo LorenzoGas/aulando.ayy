@@ -42,12 +42,12 @@
 				<div class="collapse navbar-collapse" id="navigation-example">
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							<a href="components-documentation.html" target="_blank">
+							<a data-target="#discover" data-toggle="modal">
 								<i class="material-icons">info</i>Chi siamo
 							</a>
 						</li>
 						<li>
-							<a href="http://demos.creative-tim.com/material-kit-pro/presentation.html?ref=utp-freebie" target="_blank">
+							<a data-target="#discover" data-toggle="modal">
 								<i class="material-icons">contacts</i>Contattaci
 							</a>
 						</li>
@@ -91,8 +91,8 @@
 
 								<div class="collapse navbar-collapse" id="example-navbar-primary">
 									<ul class="nav nav-pills nav-stacked navbar-vertical">
-										<li>
-											<img class="img-circle img-raised img-responsive" alt="Thumbnail Image" src="assets/img/casati.png" style="margin-right: auto;margin-left: auto;">
+										<li> 
+											 &nbsp; 
 										</li>
 
 										<br>
@@ -108,24 +108,24 @@
 												Profilo
 											</a>
 										</li>
-										<li>
-											<a data-target="#settings" data-toggle="modal">
-												<i class="material-icons">settings</i>
-												Impostazioni
-											</a>
-										</li>
 									</ul>
 								</div>
 							</nav>
 						</div>
-						<div class="col-sm-10 chat-container w-100" id="chat-container">
+						<div class="col-sm-10 left-container" >
+							<div class="row chat-container w-100"  id="chat-container">
 
+							</div>
 
-							<div class="row">
-								<div class="form-group label-floating col-sm-10">
-									<label class="control-label">Inserisci la domanda che vuoi porre</label>
-									<input type="text" id="userInput" class="form-control">
-								</div>
+							
+						
+						<div class="row ">
+							<div class="form-group col-sm-10">
+								<label class="control-label">Inserisci la domanda che vuoi porre</label>
+								<input type="text" id="userInput" class="form-control"/>
+							</div>
+							<div class="col-sm-2">
+								<button class="btn btn-primary send" onclick="startProcedure()"><i class="material-icons">send</i></button>
 							</div>
 						</div>
 					</div>
@@ -300,7 +300,7 @@
 				</div>
 			</div>
 		</div>
-
+	</div>
 </body>
 <!--   Core JS Files   -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
