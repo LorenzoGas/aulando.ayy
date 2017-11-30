@@ -1,5 +1,5 @@
 /* Aule libere al momento, dove momento = ora X , giorno = G, dipartimento = D*/
-SELECT a.nome, MIN(DATE_FORMAT(inizio, '%H:%i'))as minimo
+SELECT a.nome, MIN(DATE_FORMAT(inizio, '%H:%i'))as fino
 FROM Aula a
 JOIN Dipartimento d ON a.dipartimento = d.id AND d.id = 'D'
 LEFT JOIN AulaLezione al ON al.aula = a.id
@@ -33,7 +33,7 @@ AND 	id NOT IN(
 	GROUP BY a.nome)
 
 /* Orario aula X, il giorno Y, dipartimento D */
-SELECT d.cognomenome, m.nome, DATE_FORMAT(inizio, '%H:%i'), DATE_FORMAT(fine, '%H:%i')
+SELECT d.cognomenome, m.nome, DATE_FORMAT(inizio, '%H:%i')as inizio, DATE_FORMAT(fine, '%H:%i')as fine
 FROM Aula a
 	JOIN Dipartimento di ON a.dipartimento = di.id AND di.id = 'D'
 	JOIN AulaLezione al ON a.id = al.aula
