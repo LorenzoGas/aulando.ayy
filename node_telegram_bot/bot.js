@@ -17,16 +17,22 @@ console.log('Bot server started in the ' + process.env.NODE_ENV + ' mode');
 //Bot init ----------------- fine
 
 const erroreInterno = 'Errore interno'
+const erroreTroppiCaratteri = 'Wowow troppe parole! Capisco solo 256 caratteri.'
 var messaggioBenvenuto = 'Benvenuto/a!\n\n'
 + 'Puoi chiedere diverse domande relative alle aule, per esempio:\n\n' 
 + '- Che aule sono libere in questo momento?\n'
 + "- Quale è l'orario dell'aula a107 di povo\n"
++ "- Mi serve un'aula libera dalle 14 alle 16 a povo\n"
++ "- Quali sono le aule libere tra due giorni?\n"
++ "- Quali dipartimenti sono disponibili?\n"
 + '- Dove posso trascorrere le prossime 4 ore buche?\n\n\n'
 + 'Supporto questi dipartimenti:\n'
 + '- Povo \n'
 + '- Lettere e Filosofia \n'
 + '- Economia \n'
 + '- Ingegneria Civile Ambientale Meccanica \n'
++ '- Psicologia e Scienze Cognitive\n'
++ '- Sociologia e Ricerca Sociale\n'
 var options = {"parse_mode": "html"}
 
 bot.onText(/^/, function (msg) {
@@ -35,9 +41,14 @@ bot.onText(/^/, function (msg) {
 if(msg.text == '/start'){
     bot.sendMessage(chatId, String(messaggioBenvenuto), options);
   }else{
-    sendQuery(msg.text, chatId, (message) => {
-      bot.sendMessage(chatId, message, options);
-    })
+    if(msg.text.length < 256){
+      sendQuery(msg.text, chatId, (message) => {
+        bot.sendMessage(chatId, message, options);
+      })
+    }else{
+      bot.sendMessage(chatId, String(erroreTroppiCaratteri), options);
+    }
+    
   }
   
 });
@@ -91,7 +102,7 @@ function sendQuery(text, id, sendMessage){
                   textResult += '\n<b>' + element.nome + '</b>'
                   if(element.inizio && element.fine)
                     textResult += ' dalle ' + element.inizio + " alle " + element.fine
-                  if(element.minimo){
+                  if(element.fino){
                     textResult += ' fino alle: ' + element.fino
                   }
 
