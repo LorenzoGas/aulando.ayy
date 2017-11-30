@@ -92,7 +92,7 @@ function sendQuery(text, id, sendMessage){
                   if(element.inizio && element.fine)
                     textResult += ' dalle ' + element.inizio + " alle " + element.fine
                   if(element.minimo){
-                    textResult += ' fino alle: ' + element.minimo
+                    textResult += ' fino alle: ' + element.fino
                   }
 
               });
