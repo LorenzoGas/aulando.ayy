@@ -49,11 +49,10 @@ router.get('/resolveQuery', function (req, res) {
 
     console.log(id, requestQuery);
 
-    dialogflow_module.requestApiAi(
-        id,
-        requestQuery,
-        (out) => { dispatcher(res, out) }
-    );
+    dialogflow_module.requestApiAi(id, requestQuery)
+        .then(out => {
+            dispatcher(res, out);
+        });
 });
 
 // middleware route to support CORS and preflighted requests
@@ -160,10 +159,12 @@ function dispatcher(res, out) {
 
     if(proceed) {
         console.log(data);
-        tools.httpRequest(URL, action, data, (result) => { 
-            out.result = result;
-            res.send(out);
-            res.end(); });
+        tools.httpRequest(URL, action, data)
+            .then(result => { 
+                out.result = result;
+                res.send(out);
+                res.end();
+            });
     }
     else {
         res.send(out);
