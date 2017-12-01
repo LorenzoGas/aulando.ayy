@@ -1,0 +1,167 @@
+openapi: 3.0.0
+info:
+    version: 1.0.0
+    title: "Aulando.ayy"
+    description: Api per la richiesta di informazionoi circa aule e orari dell'università di Trento
+servers:
+    - url: https://aulando-ayy.herokuapp.com/
+      description: Server principale
+components:
+    parameters:
+        formatParameter:
+            name: formato
+            in: query
+            description: formato di dati in output desiderato
+            required: false
+            schema:
+                type: string
+                enum:
+                    - JSON
+                    - XML
+                default: JSON
+        dipartimentoParameter:
+            name: dipartimento
+            in: query
+            description: dipartimento dell'Unitn per il quale si desiderano ricevere informazioni
+            required: true
+            schema:
+                type: integer
+        giornoParameter:
+            name: giorno
+            in: query
+            description: data per la quale si desiderano ricevere informazioni
+            required: true
+            schema:
+                type: string
+                format: date
+        oraParameter:
+            name: ora
+            in: query
+            description: ora per la quale si desiderano ricevere informazioni
+            required: true
+            schema:
+                type: string
+                format: time
+        dalleParameter:
+            name: dalle
+            in: query
+            description: ora iniziale dell'intervallo per il quale si desiderano ricevere informazioni
+            required: true
+            schema:
+                type: string
+                format: time
+        alleParameter:
+            name: alle
+            in: query
+            description: ora finale dell'intervallo per il quale si desiderano ricevere informazioni
+            required: true
+            schema:
+                type: string
+                format: time
+    schemas:
+        AulaFino:     
+            type: object
+            properties:
+                nome:
+                    type: string
+                fino:
+                    type: string
+                    format: time
+        Aula:     
+            type: object
+            properties:
+                nome:
+                    type: string
+        Lezione:
+            type: object
+            properties:
+                materia:
+                    type: string
+                docente:
+                    type: string
+                inizio:
+                    type: string
+                    format: time
+                fine:
+                    type: string
+                    format: time
+paths:
+  /auleLibere:
+    get:
+        summary: lista di aule libere
+        description: Ottiene la lista di aule libere ad una determinata ora, in un determinato polo.
+        tags:
+            - Advanced query
+        operationId: auleLibere
+        parameters:
+            - $ref: '#/components/parameters/formatParameter'
+            - $ref: '#/components/parameters/dipartimentoParameter'
+            - $ref: '#/components/parameters/oraParameter'
+        responses:
+            '200':
+            description: lista di aule
+            content:
+                application/json:
+                schema:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AulaFino'
+            '4xx'
+                description: errore
+                content:
+                    application/json:
+                        schema:
+                            type: string
+/auleLibereDalleAlle:
+    get:
+        summary: lista di aule libere per un intervallo di ore
+        description: Ottiene la lista di aule libere in un determinato intervallo temporale, per un determinato polo.
+        tags:
+            - Advanced query
+        operationId: auleLibereDalleAlle
+        parameters:
+            - $ref: '#/components/parameters/formatParameter'
+            - $ref: '#/components/parameters/dipartimentoParameter'
+            - $ref: '#/components/parameters/dalleParameter'
+            - $ref: '#/components/parameters/alleParameter'
+        responses:
+            '200':
+            description: lista di aule
+            content:
+                application/json:
+                schema:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Aula'
+            '4xx'
+                description: errore
+                content:
+                    application/json:
+                        schema:
+                            type: string
+/orariAula:
+    get:
+        summary: lista di lezioni per una determinata aula
+        description: Ottiene la lista di lezioni, in un certo giorno, di un'aula specificata.
+        tags:
+            - Advanced query
+        operationId: orariAula
+        parameters:
+            - $ref: '#/components/parameters/formatParameter'
+            - $ref: '#/components/parameters/dipartimentoParameter'
+            - $ref: '#/components/parameters/aulaParameter'
+        responses:
+            '200':
+                description: lista di lezioni
+                content:
+                application/json:
+                    schema:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Lezione'
+            '4xx'
+                description: errore
+                content:
+                    application/json:
+                        schema:
+                            type: string
