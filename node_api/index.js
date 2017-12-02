@@ -10,6 +10,8 @@ var js2xmlparser    = require("js2xmlparser");
 var param_error         = "C'è un errore nella sintassi dei parametri! La sintassi corretta è la seguente:";
 var p_o                 = "[opzionale]";
 var param_dipartimento  = "dipartimento = id";
+var param_corso         = "corso = id";
+var param_subcorso      = "subcorso = id";
 var param_formato       = "formato = JSON/XML";
 var param_giorno        = "giorno = aaaa-mm-gg";
 var param_aula          = "aula = codice";
@@ -231,20 +233,44 @@ app.all('/listaCorsi',function (req, res) {
 });
 
 /**
- * @description Restituisce una lista di subcorsi per il dipartimento specificato.
+ * @description Restituisce una lista di subcorsi per il corso specificato.
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
- * @param dipartimento: id del dipartimento interessato
- * @return lista dei subcorsi del dipartimento specificato
+ * @param corso: id del corso interessato
+ * @return lista dei subcorsi del corso specificato
  */
 app.all('/listaSubcorsi',function (req, res) {
     var check   = true;
     var formato = req.query.formato != null ?  req.query.formato : req.body.formato;
-    var dipartimento = req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;
-    var result  = param_error + "\n" + p_o + param_formato + "\n" + param_dipartimento;
-    if(dipartimento == null)
+    var corso = req.query.corso != null ?  req.query.corso : req.body.corso;
+    var result  = param_error + "\n" + p_o + param_formato + "\n" + param_corso;
+    if(corso == null)
         check = false;
     if(check){
-        mysql.listaSubcorsi(dipartimento).then((out)=>{
+        mysql.listaSubcorsi(corso).then((out)=>{
+            if(formato == "XML")
+                out = js2xmlparser.parse("subcorso", out);
+            res.send(out);
+            res.end();
+        });
+    }else
+        res.end(result);
+});
+
+/**
+ * @description Restituisce una lista di materie per il subcorso specificato.
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param subcorso: id del subcorso interessato
+ * @return lista delle materie del subcorso specificato
+ */
+app.all('/listaMaterie',function (req, res) {
+    var check   = true;
+    var formato = req.query.formato != null ?  req.query.formato : req.body.formato;
+    var subcorso = req.query.subcorso != null ?  req.query.subcorso : req.body.subcorso;
+    var result  = param_error + "\n" + p_o + param_formato + "\n" + param_subcorso;
+    if(subcorso == null)
+        check = false;
+    if(check){
+        mysql.listaSubcorsi(subcorso).then((out)=>{
             if(formato == "XML")
                 out = js2xmlparser.parse("subcorso", out);
             res.send(out);
