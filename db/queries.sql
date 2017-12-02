@@ -33,7 +33,7 @@ AND 	id NOT IN(
 	GROUP BY a.nome)
 
 /* Orario aula X, il giorno Y, dipartimento D */
-SELECT d.cognomenome, m.nome, DATE_FORMAT(inizio, '%H:%i')as inizio, DATE_FORMAT(fine, '%H:%i')as fine
+SELECT d.cognomenome as docente, m.nome as materia, DATE_FORMAT(inizio, '%H:%i')as inizio, DATE_FORMAT(fine, '%H:%i')as fine
 FROM Aula a
 	JOIN Dipartimento di ON a.dipartimento = di.id AND di.id = 'D'
 	JOIN AulaLezione al ON a.id = al.aula

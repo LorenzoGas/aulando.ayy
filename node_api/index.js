@@ -1,12 +1,15 @@
 /*globals require, console, process */
-var express = require('express');
-var bodyParser = require('body-parser');
-var mysql = require('database.js');
-var path    = require("path");
+var express         = require('express');
+var bodyParser      = require('body-parser');
+var mysql           = require('database.js');
+var path            = require("path");
+var js2xmlparser    = require("js2xmlparser");
+
+
 
 var param_error         = "C'è un errore nella sintassi dei parametri! La sintassi corretta è la seguente:";
 var p_o                 = "[opzionale]";
-var param_dipartimento  = "dipartimento = codice";
+var param_dipartimento  = "dipartimento = id";
 var param_formato       = "formato = JSON/XML";
 var param_giorno        = "giorno = aaaa-mm-gg";
 var param_aula          = "aula = codice";
@@ -51,7 +54,7 @@ app.all('/', function (req, res) {
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
  * @param giorno: giorno in cui si vogliono gli orari, nel formato 'dd-mm-aaaa'
  * @param ora: ora a cui si è interessati, nel formato militare. Es: 16:00
- * @param dipartimento codice del dipartimento desiderato
+ * @param dipartimento id del dipartimento desiderato
  * @return lista di aule libere 
  */
 app.all('/auleLibere',function (req, res) {
@@ -65,7 +68,9 @@ app.all('/auleLibere',function (req, res) {
     if(giorno == null || ora == null || dipartimento == null)
         check = false;
     if(check){
-        mysql.auleLibere(dipartimento,giorno,ora,(out) =>{
+        mysql.auleLibere(dipartimento,giorno,ora).then((out)=>{
+            if(formato == "XML")
+                out = js2xmlparser.parse("aula", out);
             res.send(out);
             res.end();
         });
@@ -77,7 +82,7 @@ app.all('/auleLibere',function (req, res) {
 /**
  * @description Restituisce una lista di aule disponibili nell'intervallo di tempo specificato. 
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
- * @param dipartimento codice del dipartimento desiderato
+ * @param dipartimento id del dipartimento desiderato
  * @param giorno: giorno in cui si vogliono gli orari, nel formato 'aaaa-mm-dd'
  * @param dalle: orario iniziale a cui si è interessati, nel formato militare. Es: 16:00
  * @param alle: orario finale a cui si è interessati, nel formato militare. Es: 16:00
@@ -95,7 +100,9 @@ app.all('/auleLibereDalleAlle', function (req, res) {
     if(dipartimento == null || giorno == null || dalle == null || alle == null)
         check = false;
     if(check){
-        mysql.auleLibereDalleAlle(dipartimento,giorno,dalle,alle,(out)=>{
+        mysql.auleLibereDalleAlle(dipartimento,giorno,dalle,alle).then((out)=>{
+            if(formato == "XML")
+                out = js2xmlparser.parse("aula", out);
             res.send(out);
             res.end();
         });
@@ -108,7 +115,7 @@ app.all('/auleLibereDalleAlle', function (req, res) {
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
  * @param giorno: giorno in cui si vogliono gli orari, nel formato 'dd-mm-aaaa'
  * @param aula: nome per l'aula per la quale si vogliono gli orari, es: 'Aula PC B107'
- * @param dipartimento codice del dipartimento desiderato
+ * @param dipartimento id del dipartimento desiderato
  * @returns lista di lezioni, nel formato specificato.
  */
 app.all('/orariAula', function (req, res) {
@@ -120,8 +127,10 @@ app.all('/orariAula', function (req, res) {
     var result  = param_error + "\n" + p_o + param_formato + "\n" + param_aula +"\n" + param_giorno +"\n" + param_dipartimento;
     if(aula == null || giorno == null || dipartimento == null)
         check = false;
-    if(check == true){
-        mysql.orariAula(dipartimento,aula,giorno,(out)=>{
+    if(check){
+        mysql.orariAula(dipartimento,aula,giorno).then((out)=>{
+            if(formato == "XML")
+                out = js2xmlparser.parse("lezione", out);
             res.send(out);
             res.end();
         });
@@ -141,7 +150,9 @@ app.all('/listaDipartimenti',function (req, res) {
     var formato = req.query.formato != null ?  req.query.formato : req.body.formato;
     var result  = param_error + "\n" + p_o + param_formato;
     if(check){
-        mysql.listaDipartimenti((out) => { 
+        mysql.listaDipartimenti().then((out)=>{
+            if(formato == "XML")
+                out = js2xmlparser.parse("dipartimento", out);
             res.send(out);
             res.end();
         });
@@ -162,7 +173,9 @@ app.all('/listaAule',function (req, res) {
     if(dipartimento == null)
         check = false;
     if(check){
-        mysql.listaAule((dipartimento,out) => { 
+        mysql.listaAule(dipartimento).then((out)=>{
+            if(formato == "XML")
+                out = js2xmlparser.parse("aula", out);
             res.send(out);
             res.end();
         });
@@ -173,7 +186,7 @@ app.all('/listaAule',function (req, res) {
 /**
  * @description Restituisce una lista di docenti per il dipartimento specificato.
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
- * @param dipartimento: codice del dipartimento interessato
+ * @param dipartimento: id del dipartimento interessato
  * @return lista dei docenti del dipartimento specificato
  */
 app.all('/listaDocenti',function (req, res) {
@@ -184,7 +197,9 @@ app.all('/listaDocenti',function (req, res) {
     if(dipartimento == null)
         check = false;
     if(check){
-        mysql.listaDocenti((dipartimento,out) => { 
+        mysql.listaDocenti(dipartimento).then((out)=>{
+            if(formato == "XML")
+                out = js2xmlparser.parse("docente", out);
             res.send(out);
             res.end();
         });
@@ -194,7 +209,7 @@ app.all('/listaDocenti',function (req, res) {
 /**
  * @description Restituisce una lista di corsi per il dipartimento specificato.
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
- * @param dipartimento: codice del dipartimento interessato
+ * @param dipartimento: id del dipartimento interessato
  * @return lista dei corsi del dipartimento specificato
  */
 app.all('/listaCorsi',function (req, res) {
@@ -205,7 +220,9 @@ app.all('/listaCorsi',function (req, res) {
     if(dipartimento == null)
         check = false;
     if(check){
-        mysql.listaCorsi((dipartimento,out) => { 
+        mysql.listaCorsi(dipartimento).then((out)=>{
+            if(formato == "XML")
+                out = js2xmlparser.parse("corso", out);
             res.send(out);
             res.end();
         });
@@ -216,7 +233,7 @@ app.all('/listaCorsi',function (req, res) {
 /**
  * @description Restituisce una lista di subcorsi per il dipartimento specificato.
  * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
- * @param dipartimento: codice del dipartimento interessato
+ * @param dipartimento: id del dipartimento interessato
  * @return lista dei subcorsi del dipartimento specificato
  */
 app.all('/listaSubcorsi',function (req, res) {
@@ -227,7 +244,9 @@ app.all('/listaSubcorsi',function (req, res) {
     if(dipartimento == null)
         check = false;
     if(check){
-        mysql.listaSubcorsi((dipartimento,out) => { 
+        mysql.listaSubcorsi(dipartimento).then((out)=>{
+            if(formato == "XML")
+                out = js2xmlparser.parse("subcorso", out);
             res.send(out);
             res.end();
         });
