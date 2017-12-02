@@ -8,7 +8,7 @@ servers:
       description: Server principale
 components:
     parameters:
-        formatParameter:
+        formatoParameter:
             name: formato
             in: query
             description: formato di dati in output desiderato
@@ -22,10 +22,31 @@ components:
         dipartimentoParameter:
             name: dipartimento
             in: query
-            description: dipartimento dell'Unitn per il quale si desiderano ricevere informazioni
+            description: id del dipartimento dell'Unitn per il quale si desiderano ricevere informazioni
             required: true
             schema:
                 type: integer
+        corsoParameter:
+            name: corso
+            in: query
+            description: id del corso dell'Unitn per il quale si desiderano ricevere informazioni
+            required: true
+            schema:
+                type: integer
+        subcorsoParameter:
+            name: subcorso
+            in: query
+            description: id del subcorso dell'Unitn per il quale si desiderano ricevere informazioni
+            required: true
+            schema:
+                type: integer
+        aulaParameter:
+            name: aula
+            in: query
+            description: nome dell'aula dell'Unitn per la quale si desiderano ricevere informazioni
+            required: true
+            schema:
+                type: string
         giornoParameter:
             name: giorno
             in: query
@@ -85,6 +106,49 @@ components:
                 fine:
                     type: string
                     format: time
+        Dipartimento:
+            type: object
+            properties: 
+                nome: 
+                    type: string
+                codice:
+                    type: string
+                id:
+                    type: int
+        Docente:
+            type: object
+            properties: 
+                cognomenome: 
+                    type: string
+                codice:
+                    type: string
+                id:
+                    type: int
+        Corso:
+            type: object
+            properties: 
+                nome: 
+                    type: string
+                codice:
+                    type: string
+                id:
+                    type: int
+        Subcorso:
+            type: object
+            properties: 
+                nome: 
+                    type: string
+                codice:
+                    type: string
+                id:
+                    type: int
+        Materia:
+            type: object
+            properties: 
+                nome: 
+                    type: string
+                id:
+                    type: int
 paths:
   /auleLibere:
     get:
@@ -94,7 +158,7 @@ paths:
             - Advanced query
         operationId: auleLibere
         parameters:
-            - $ref: '#/components/parameters/formatParameter'
+            - $ref: '#/components/parameters/formatoParameter'
             - $ref: '#/components/parameters/dipartimentoParameter'
             - $ref: '#/components/parameters/oraParameter'
         responses:
@@ -102,14 +166,19 @@ paths:
             description: lista di aule
             content:
                 application/json:
-                schema:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/AulaFino'
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/AulaFino'
+                application/xml:
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/AulaFino'
             '4xx'
                 description: errore
                 content:
-                    application/json:
+                    text/plain:
                         schema:
                             type: string
 /auleLibereDalleAlle:
@@ -120,7 +189,7 @@ paths:
             - Advanced query
         operationId: auleLibereDalleAlle
         parameters:
-            - $ref: '#/components/parameters/formatParameter'
+            - $ref: '#/components/parameters/formatoParameter'
             - $ref: '#/components/parameters/dipartimentoParameter'
             - $ref: '#/components/parameters/dalleParameter'
             - $ref: '#/components/parameters/alleParameter'
@@ -129,14 +198,19 @@ paths:
             description: lista di aule
             content:
                 application/json:
-                schema:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Aula'
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/Aula'
+                application/xml:
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/Aula'
             '4xx'
                 description: errore
                 content:
-                    application/json:
+                    text/plain:
                         schema:
                             type: string
 /orariAula:
@@ -147,21 +221,205 @@ paths:
             - Advanced query
         operationId: orariAula
         parameters:
-            - $ref: '#/components/parameters/formatParameter'
+            - $ref: '#/components/parameters/formatoParameter'
             - $ref: '#/components/parameters/dipartimentoParameter'
             - $ref: '#/components/parameters/aulaParameter'
         responses:
             '200':
                 description: lista di lezioni
-                content:
-                application/json:
-                    schema:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Lezione'
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Lezione'
+                        application/xml:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Lezione'
             '4xx'
                 description: errore
                 content:
+                    text/plain:
+                        schema:
+                            type: string
+/listaDipartimenti:
+    get:
+        summary: lista dei dipartimenti supportati da aulando.ayy
+        description: Ottiene la lista di dipartimenti supportati dalle api di aulando.ayy
+        tags:
+            - Base query
+        operationId: listaDipartimenti
+        parameters:
+            - $ref: '#/components/parameters/formatoParameter'
+        responses:
+            '200':
+                description: lista di dipartimenti
+                content:
                     application/json:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Dipartimento'
+                    application/xml:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Dipartimento'
+            '4xx'
+                description: errore
+                content:
+                    text/plain:
+                        schema:
+                            type: string
+/listaAule:
+    get:
+        summary: lista delle aule per un dipartimento
+        description: Ottiene la lista completa delle aule presenti in un dipartimento
+        tags:
+            - Base query
+        operationId: listaAule
+        parameters:
+            - $ref: '#/components/parameters/formatoParameter'
+            - $ref: '#/components/parameters/dipartimentoParameter'
+        responses:
+            '200':
+                description: lista delle aule
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Aula'
+                    application/xml:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Aula'
+            '4xx'
+                description: errore
+                content:
+                    text/plain:
+                        schema:
+                            type: string
+/listaDocenti:
+    get:
+        summary: lista dei docenti per un dato dipartimento
+        description: Ottiene la lista completa dei docenti che operano in un certo dipartimento
+        tags:
+            - Base query
+        operationId: listaDocenti
+        parameters:
+            - $ref: '#/components/parameters/formatoParameter'
+            - $ref: '#/components/parameters/dipartimentoParameter'
+        responses:
+            '200':
+                description: lista dei docenti
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Docente'
+                    application/xml:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Docente'
+            '4xx'
+                description: errore
+                content:
+                    text/plain:
+                        schema:
+                            type: string
+/listaMaterie:
+    get:
+        summary: lista delle materie per un dato subcorso
+        description: Ottiene la lista completa delle materie relative ad un certo subcorso
+        tags:
+            - Base query
+        operationId: listaMaterie
+        parameters:
+            - $ref: '#/components/parameters/formatoParameter'
+            - $ref: '#/components/parameters/subcorsoParameter'
+        responses:
+            '200':
+                description: lista delle materie
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Materia'
+                    application/xml:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Materia'
+            '4xx'
+                description: errore
+                content:
+                    text/plain:
+                        schema:
+                            type: string
+/listaCorsi:
+    get:
+        summary: lista dei corsi di studio per un dato dipartimento
+        description: Ottiene la lista completa dei corsi di studio per un certo dipartimento
+        tags:
+            - Base query
+        operationId: listaCorsi
+        parameters:
+            - $ref: '#/components/parameters/formatoParameter'
+            - $ref: '#/components/parameters/dipartimentoParameter'
+        responses:
+            '200':
+                description: lista dei docenti
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Corso'
+                    application/xml:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Corso'
+            '4xx'
+                description: errore
+                content:
+                    text/plain:
+                        schema:
+                            type: string
+/listaSubcorsi:
+    get:
+        summary: lista dei subcorsi per un dato corso di studio
+        description: Ottiene la lista completa dei subcorsi per un certo corso di studio
+        tags:
+            - Base query
+        operationId: listaSubcorsi
+        parameters:
+            - $ref: '#/components/parameters/formatoParameter'
+            - $ref: '#/components/parameters/corsoParameter'
+        responses:
+            '200':
+                description: lista dei docenti
+                content:
+                    application/json:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Subcorso'
+                    application/xml:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Subcorso'
+            '4xx'
+                description: errore
+                content:
+                    text/plain:
                         schema:
                             type: string
