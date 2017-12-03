@@ -1,7 +1,7 @@
 var token = process.env.TOKEN;
 
-var Bot = require('node-telegram-bot-api');
-var https = require('https')
+var Bot = require('node-telegram-bot-api')
+var botLogic = require('./botLogic')
 var bot;
 
 if(process.env.NODE_ENV === 'production') {
@@ -14,114 +14,15 @@ else {
 
 console.log('Bot server started in the ' + process.env.NODE_ENV + ' mode');
 
-//Bot init ----------------- fine
-
-const erroreInterno = 'Errore interno'
-const erroreTroppiCaratteri = 'Wowow troppe parole! Capisco solo 256 caratteri.'
-var messaggioBenvenuto = 'Benvenuto/a!\n\n'
-+ 'Puoi chiedere diverse domande relative alle aule, per esempio:\n\n' 
-+ '- Che aule sono libere in questo momento?\n'
-+ "- Quale è l'orario dell'aula a107 di povo\n"
-+ "- Mi serve un'aula libera dalle 14 alle 16 a povo\n"
-+ "- Quali sono le aule libere tra due giorni?\n"
-+ "- Quali dipartimenti sono disponibili?\n"
-+ '- Dove posso trascorrere le prossime 4 ore buche?\n\n\n'
-+ 'Supporto questi dipartimenti:\n'
-+ '- Povo \n'
-+ '- Lettere e Filosofia \n'
-+ '- Economia \n'
-+ '- Ingegneria Civile Ambientale Meccanica \n'
-+ '- Psicologia e Scienze Cognitive\n'
-+ '- Sociologia e Ricerca Sociale\n'
 var options = {"parse_mode": "html"}
 
 bot.onText(/^/, function (msg) {
-  const chatId = msg.chat.id;
 
-if(msg.text == '/start'){
-    bot.sendMessage(chatId, String(messaggioBenvenuto), options);
-  }else{
-    if(msg.text.length < 256){
-      sendQuery(msg.text, chatId, (message) => {
-        bot.sendMessage(chatId, message, options);
-      })
-    }else{
-      bot.sendMessage(chatId, String(erroreTroppiCaratteri), options);
-    }
-    
-  }
+  botLogic(msg).then(data => {
+    bot.sendMessage(msg.chat.id, data, options)
+  }).catch(err => {console.log(err)})
   
+
 });
-
-
-function sendQuery(text, id, sendMessage){
-  var url = 'https://aulando-ayy-dialogflow-api.herokuapp.com/dialogflow_api/resolveQuery?requestQuery=' +  text
-  if(id)
-      url += '&id=' + id
-  https.get(url, (res) => {
-      const { statusCode } = res;
-      const contentType = res.headers['content-type'];
-    
-      let error;
-      if (statusCode !== 200) {
-        error = new Error('Request Failed.\n' +
-                          `Status Code: ${statusCode}`);
-      } else if (!/^application\/json/.test(contentType)) {
-        error = new Error('Invalid content-type.\n' +
-                          `Expected application/json but received ${contentType}`);
-      }
-      if (error) {
-        console.error(error.message);
-        // consume response data to free up memory
-        res.resume();
-        sendMessage(erroreInterno);
-        return;
-      }
-    
-      res.setEncoding('utf8');
-      let rawData = '';
-      res.on('data', (chunk) => { rawData += chunk; });
-      res.on('end', () => {
-        try {
-          const parsedData = JSON.parse(rawData);
-          console.log(parsedData);
-
-          var textResult = ''
-
-          textResult += parsedData.speech
-
-          console.log(parsedData)
-
-          if(parsedData.result){
-
-              if(parsedData.result.length == 0){
-                  textResult += '\nNessun risultato :('
-              }
-
-              parsedData.result.forEach(function(element) {
-                  textResult += '\n<b>' + element.nome + '</b>'
-                  if(element.inizio && element.fine)
-                    textResult += ' dalle ' + element.inizio + " alle " + element.fine
-                  if(element.fino){
-                    textResult += ' fino alle: ' + element.fino
-                  }
-
-              });
-             
-          }
-
-          sendMessage(textResult)
-
-        } catch (e) {
-          console.error(e.message);
-          sendMessage(erroreInterno);
-        }
-      });
-    }).on('error', (e) => {
-      console.error(`Got error: ${e.message}`);
-      sendMessage(erroreInterno);
-    });
-}
-
 
 module.exports = bot;
