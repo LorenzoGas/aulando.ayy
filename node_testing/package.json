@@ -1,0 +1,19 @@
+{
+  "name": "node_testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dialogflow.test.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true
+  },
+  "devDependencies": {
+    "jest": "^21.2.1"
+  }
+}

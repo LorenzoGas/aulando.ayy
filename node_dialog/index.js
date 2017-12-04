@@ -49,11 +49,10 @@ router.get('/resolveQuery', function (req, res) {
 
     console.log(id, requestQuery);
 
-    dialogflow_module.requestApiAi(
-        id,
-        requestQuery,
-        (out) => { dispatcher(res, out) }
-    );
+    dialogflow_module.requestApiAi(id, requestQuery)
+        .then(out => {
+            dispatcher(res, out);
+        });
 });
 
 // middleware route to support CORS and preflighted requests
@@ -96,15 +95,17 @@ function dispatcher(res, out) {
     console.log('\n');
     console.log(out);
     
-    if(!(out.action == 'input.unknown' || out.actionIncomplete)) {
-        var data = {};   
-        var action;
+    var data = {};   
+    var action;
+    var proceed = !out.actionIncomplete;
+
+    if (proceed) {
         switch(out.action) {
             case actions.auleLibere:
                 action = actions.auleLibere;
                 // Inizializzo parametri della richiesta
                 data.formato = formato;
-                             
+                                
                 var dateArr = tools.getDate(out.timestamp, out.parameters.date, out.parameters.time);
                 data.giorno = dateArr.giorno;
                 data.ora = dateArr.ora;
@@ -151,14 +152,19 @@ function dispatcher(res, out) {
                 data.aula = out.parameters.aula;
                 data.dipartimento = out.parameters.dipartimento;
             break;
+
+            default: proceed = false; break;
         }
+    }
 
+    if(proceed) {
         console.log(data);
-
-        tools.httpRequest(URL, action, data, (result) => { 
-            out.result = result;
-            res.send(out);
-            res.end(); });
+        tools.httpRequest(URL, action, data)
+            .then(result => { 
+                out.result = result;
+                res.send(out);
+                res.end();
+            });
     }
     else {
         res.send(out);
