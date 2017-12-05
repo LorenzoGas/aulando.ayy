@@ -27,9 +27,8 @@ AND 	id NOT IN(
 		JOIN AulaLezione al ON a.id = al.aula
 		JOIN Lezione l ON l.id = al.lezione 
 	AND 	l.giorno = 'Z'
-	AND		((l.fine <= 'Y' AND l.fine > 'X') 
-		OR
-			(l.inizio >= 'X' AND l.inizio < 'Y'))
+	AND		l.inizio < 'Y'
+	AND		l.fine > 'X'
 	GROUP BY a.nome)
 
 /* Orario aula X, il giorno Y, dipartimento D */
