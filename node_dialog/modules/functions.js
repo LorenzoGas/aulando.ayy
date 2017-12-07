@@ -54,7 +54,7 @@ function makeId() {
 // METODI PER LA GESTIONE DELLE RICHIESTE HTTP
 
 // Richiesta Http a (URL+action) con parametri (data) e funzione di callback
-function httpRequest(URL, action, data, callback) {    
+function httpRequest(URL, action, data) {    
     var url = URL + action;
     console.log('\n');
     console.log('Requested to', URL + action);
