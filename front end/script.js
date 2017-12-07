@@ -28,6 +28,7 @@ function startProcedure() {
     $("#userInput").val("");
 }
 
+
 function appentNewText(txt, source) {
     var msg = source.html().replace("^", txt);
     var minutes = new Date().getMinutes();
