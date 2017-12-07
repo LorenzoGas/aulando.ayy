@@ -47,7 +47,7 @@ app.use(function (req, res, next) {
 
 //HOMEPAGE
 app.all('/', function (req, res) {
-    res.sendFile(path.join(__dirname+'/home.html'));
+    res.sendFile(path.join(__dirname+'/Documentation.json'));
 });
 
 /************************************ SERVIZI COMPLESSI ********************************* */
