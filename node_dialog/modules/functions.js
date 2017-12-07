@@ -29,12 +29,14 @@ function getDate(timestamp, paramDate, paramTime){
 // A partire da una stringa hh:mm:ss genera una stringa hh:mm
 function formatHour(hour) {
     hour = hour.split(':');
+    if(hour.length < 2)
+        throw new Error('Formato non corretto. Atteso: hh:mm:ss / hh:mm');
     return hour[0] + ':' + hour[1];
 }
 
 // Restituisce la stringa ora in input con applicato l'offset
 function getHourFromOffset(hour, offset) {
-    var time = hour.split(':');
+    var time = formatHour(hour).split(':');
     return (parseInt(time[0]) + (offset||0)) + ':' + time[1];
 }
 
