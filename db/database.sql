@@ -3,8 +3,7 @@ USE aulando;
 CREATE TABLE Docente(
 	id 		INT AUTO_INCREMENT,
 	codice 	VARCHAR(255),
-	nome 	VARCHAR(255) NOT NULL,
-	cognome VARCHAR(255) NOT NULL,
+	cognomenome VARCHAR(255) NOT NULL,
 	CONSTRAINT PKDocente PRIMARY KEY (id)
 );
 CREATE TABLE Corso(
@@ -55,8 +54,8 @@ CREATE TABLE Lezione(
 	id				INT AUTO_INCREMENT,
 	docente			INT NOT NULL,
 	materia			INT NOT NULL,
-	inizio			INT(4) NOT NULL,
-	fine			INT(4) NOT NULL,
+	inizio			TIME NOT NULL,
+	fine			TIME NOT NULL,
 	giorno			DATE NOT NULL,
 	tipologia		VARCHAR(255) NOT NULL,
 	CONSTRAINT PKLezione 			PRIMARY KEY (id),

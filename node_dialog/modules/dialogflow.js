@@ -8,7 +8,8 @@ function requestApiAi(id, requestQuery, func) {
     });
     
     request.on('response', function(response) {
-        var sessionId = response.id;
+        var sessionId = response.sessionId;
+        var timestamp = response.timestamp;
         var action = response.result.action;
         var actionIncomplete = response.result.actionIncomplete;
         var parameters = response.result.parameters;
@@ -16,6 +17,7 @@ function requestApiAi(id, requestQuery, func) {
 
         var out = {};
         out.sessionId = sessionId;
+        out.timestamp = timestamp;
         out.action = action;
         out.actionIncomplete = actionIncomplete;
         out.parameters = parameters;
