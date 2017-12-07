@@ -7,7 +7,7 @@ var moment = require('moment-timezone');
 // A partire da una data in formato stringa (timestamp), genera due stringhe (giorno, ora) nella formattazione richiesta dal modulo DB
 // Se paramDate o paramTime sono non nulli, sono usati per la generazione del risultato
 function getDate(timestamp, paramDate, paramTime){
-    var formatDate = 'YYYY/MM/DD';
+    var formatDate = 'YYYY-MM-DD';
     var formatTime = 'HH:mm';
     var giorno = moment.tz(timestamp, "Europe/Rome").format(formatDate);
     var ora = moment.tz(timestamp, "Europe/Rome").format(formatTime);
@@ -35,7 +35,7 @@ function formatHour(hour) {
 // Restituisce la stringa ora in input con applicato l'offset
 function getHourFromOffset(hour, offset) {
     var time = hour.split(':');
-    return (parseInt(time[0]) + offset) + ':' + time[1];
+    return (parseInt(time[0]) + (offset||0)) + ':' + time[1];
 }
 
 // METODI VARI
@@ -54,19 +54,21 @@ function makeId() {
 // METODI PER LA GESTIONE DELLE RICHIESTE HTTP
 
 // Richiesta Http a (URL+action) con parametri (data) e funzione di callback
-function httpRequest(URL, action, data, callback) {    
+function httpRequest(URL, action, data) {    
     var url = URL + action;
     console.log('\n');
     console.log('Requested to', URL + action);
 
-    request({url:url, qs:data}, function(err, response, body) {
-        if(err) { 
-            console.log(err); return;
-        }
-        
-        response = JSON.parse(response.body);
-        console.log('Response JSON',response);
-        callback(response);
+    return new Promise(resolve => {        
+        request({url:url, qs:data}, function(err, response, body) {
+            if(err) { 
+                console.log(err); resolve();
+            }
+            
+            console.log('Response JSON', response.body);
+            response = JSON.parse(response.body);
+            resolve(response);
+        });
     });
 }
 

@@ -27,15 +27,23 @@ fs.readFile('dati.csv', 'utf8', function (err,data) {
 
       pulisci(synonyms, element, ["Aula "]);
       pulisci(synonyms, element, ["Aula pc "]);
+      pulisci(synonyms, element, [", Palazzo Fedrigotti"]);
+      pulisci(synonyms, element, [", Palazzo Fedrigotti"]);
+      pulisci(synonyms, element, [" musicale Via T. Gar"]);
+      pulisci(synonyms, element, [" Via T. Gar"]);
+      pulisci(synonyms, element, ["/"]);
 
       pulisci(synonyms, element, [" - Andreatta", "Aula "]);
-      pulisci(synonyms, element, [" (SALA CONFERENZE)", "Aula "]);
+      pulisci(synonyms, element, [" SALA CONFERENZE", "Aula "]);
       pulisci(synonyms, element, [" piano terra", "Aula "]);
       pulisci(synonyms, element, [" primo piano", "Aula "]);
       pulisci(synonyms, element, [" piano terra", "Aula "]);
-      pulisci(synonyms, element, [" (spazio polifunzionale)", "Aula "]);
+      pulisci(synonyms, element, [" spazio polifunzionale", "Aula "]);
       pulisci(synonyms, element, [" - 1Â° p.", "Aula "]);
-      pulisci(synonyms, element, [" - P.T.", "Aula "]);
+      pulisci(synonyms, element, [" - P.T.", "Aula "]);      
+      pulisci(synonyms, element, [" Via T. Gar", "Aula "]);
+      pulisci(synonyms, element, ["/", "Aula "]);
+ 
 
       var entries = 
             {
