@@ -67,7 +67,7 @@ app.all('/auleLibere',function (req, res) {
     var dipartimento = req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;
     var result  = param_error + "\n" + p_o + param_formato + "\n" + param_dipartimento +"\n" + param_giorno + "\n" + param_ora;
     
-    if(giorno == null || ora == null || dipartimento == null)
+    if(giorno == null || ora == null || dipartimento == null || !checkDate(giorno))
         check = false;
     if(check){
         mysql.auleLibere(dipartimento,giorno,ora).then((out)=>{
@@ -99,7 +99,7 @@ app.all('/auleLibereDalleAlle', function (req, res) {
     var alle = req.query.alle != null ?  req.query.alle : req.body.alle;
     var result  = param_error + "\n" + p_o + param_formato + "\n" + param_dipartimento +"\n" + param_giorno + "\n" + param_dalle + "\n" + param_alle;
 
-    if(dipartimento == null || giorno == null || dalle == null || alle == null)
+    if(dipartimento == null || giorno == null || dalle == null || alle == null | !checkDate(giorno))
         check = false;
     if(check){
         mysql.auleLibereDalleAlle(dipartimento,giorno,dalle,alle).then((out)=>{
@@ -127,7 +127,7 @@ app.all('/orariAula', function (req, res) {
     var giorno = req.query.giorno != null ?  req.query.giorno : req.body.giorno;
     var dipartimento = req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;
     var result  = param_error + "\n" + p_o + param_formato + "\n" + param_aula +"\n" + param_giorno +"\n" + param_dipartimento;
-    if(aula == null || giorno == null || dipartimento == null)
+    if(aula == null || giorno == null || dipartimento == null || !checkDate(giorno))
         check = false;
     if(check){
         mysql.orariAula(dipartimento,aula,giorno).then((out)=>{
@@ -270,7 +270,7 @@ app.all('/listaMaterie',function (req, res) {
     if(subcorso == null)
         check = false;
     if(check){
-        mysql.listaSubcorsi(subcorso).then((out)=>{
+        mysql.listaMaterie(subcorso).then((out)=>{
             if(formato == "XML")
                 out = js2xmlparser.parse("subcorso", out);
             res.send(out);
@@ -280,7 +280,13 @@ app.all('/listaMaterie',function (req, res) {
         res.end(result);
 });
 /**FUNZIONI AUSILIARI */
-
+var checkDate = function(d){
+    d = new Date(d);
+    return (d instanceof Date && !isNaN(d.valueOf()));
+}
+var checkHour = function(h){
+    return isValid = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(h);
+}
 //server methods 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
@@ -292,5 +298,7 @@ app.use((err, req, res, next) => {
     res.json({ error: { message: err.message } });
 });
 app.listen(port, function () {
-    console.log('Example app listening on port ', port);
+    
 });
+
+exports.checkDate = checkDate;

@@ -19,7 +19,7 @@ ORDER BY IFNULL(MIN(l.inizio),'24:00') DESC
 
 /* Aule libere dalle X alle Y */
 SELECT 	nome 
-FROM 	aula
+FROM 	Aula
 WHERE 	dipartimento = 'd'
 AND 	id NOT IN(
 	SELECT a.id

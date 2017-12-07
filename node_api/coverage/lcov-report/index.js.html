@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for index.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="prettify.css" />
+    <link rel="stylesheet" href="base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="index.html">All files</a> index.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">22.73% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>40/176</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">3.33% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>4/120</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">8% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/25</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">22.73% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>40/176</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">/*globals require, console, process */
+var express         = require('express');
+var bodyParser      = require('body-parser');
+var mysql           = require('database.js');
+var path            = require("path");
+var js2xmlparser    = require("js2xmlparser");
+&nbsp;
+&nbsp;
+&nbsp;
+var param_error         = "C'è un errore nella sintassi dei parametri! La sintassi corretta è la seguente:";
+var p_o                 = "[opzionale]";
+var param_dipartimento  = "dipartimento = id";
+var param_corso         = "corso = id";
+var param_subcorso      = "subcorso = id";
+var param_formato       = "formato = JSON/XML";
+var param_giorno        = "giorno = aaaa-mm-gg";
+var param_aula          = "aula = codice";
+var param_ora           = "ora = hh:mm";
+var param_dalle         = "dalle = hh:mm";
+var param_alle          = "alle = hh:mm";
+&nbsp;
+// instantiate express
+var app = express();
+var router = express.Router();
+&nbsp;
+//Configure bodyparser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+&nbsp;
+// set our port
+var port = process.env.PORT || 8080;
+&nbsp;
+// middleware route to support CORS and preflighted requests
+app.use(<span class="fstat-no" title="function not covered" >fu</span>nction (req, res, next) {
+    //Enabling CORS
+<span class="cstat-no" title="statement not covered" >    res.header('Access-Control-Allow-Origin', '*');</span>
+<span class="cstat-no" title="statement not covered" >    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');</span>
+<span class="cstat-no" title="statement not covered" >    res.header('Content-Type', 'application/json');</span>
+<span class="cstat-no" title="statement not covered" >    if (req.method == 'OPTIONS') {</span>
+<span class="cstat-no" title="statement not covered" >        res.header('Access-Control-Allow-Methods', 'PUT, POST, DELETE');</span>
+<span class="cstat-no" title="statement not covered" >        return res.status(200).json({});</span>
+    }
+<span class="cstat-no" title="statement not covered" >    console.log("Query=",req.query,";\nBody: ",req.body);</span>
+    // make sure we go to the next routes
+<span class="cstat-no" title="statement not covered" >    next();</span>
+});
+&nbsp;
+//HOMEPAGE
+app.all('/', <span class="fstat-no" title="function not covered" >fu</span>nction (req, res) {
+<span class="cstat-no" title="statement not covered" >    res.sendFile(path.join(__dirname+'/home.html'));</span>
+});
+&nbsp;
+/************************************ SERVIZI COMPLESSI ********************************* */
+/**
+ * @description Restituisce una lista di aule disponibili per un'ora specificata ed un dato dipartimento.
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param giorno: giorno in cui si vogliono gli orari, nel formato 'dd-mm-aaaa'
+ * @param ora: ora a cui si è interessati, nel formato militare. Es: 16:00
+ * @param dipartimento id del dipartimento desiderato
+ * @return lista di aule libere 
+ */
+app.all('/auleLibere',<span class="fstat-no" title="function not covered" >fu</span>nction (req, res) {
+    var check   = <span class="cstat-no" title="statement not covered" >true;</span>
+    var formato = <span class="cstat-no" title="statement not covered" >req.query.formato != null ?  req.query.formato : req.body.formato;</span>
+    var giorno = <span class="cstat-no" title="statement not covered" >req.query.giorno != null ?  req.query.giorno : req.body.giorno;</span>
+    var ora = <span class="cstat-no" title="statement not covered" >req.query.ora != null ?  req.query.ora : req.body.ora;</span>
+    var dipartimento = <span class="cstat-no" title="statement not covered" >req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;</span>
+    var result  = <span class="cstat-no" title="statement not covered" >param_error + "\n" + p_o + param_formato + "\n" + param_dipartimento +"\n" + param_giorno + "\n" + param_ora;</span>
+    
+<span class="cstat-no" title="statement not covered" >    if(giorno == null || ora == null || dipartimento == null || !checkDate(giorno))</span>
+<span class="cstat-no" title="statement not covered" >        check = false;</span>
+<span class="cstat-no" title="statement not covered" >    if(check){</span>
+<span class="cstat-no" title="statement not covered" >        mysql.auleLibere(dipartimento,giorno,ora).then(<span class="fstat-no" title="function not covered" >(o</span>ut)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >            if(formato == "XML")</span>
+<span class="cstat-no" title="statement not covered" >                out = js2xmlparser.parse("aula", out);</span>
+<span class="cstat-no" title="statement not covered" >            res.send(out);</span>
+<span class="cstat-no" title="statement not covered" >            res.end();</span>
+        });
+    }else
+<span class="cstat-no" title="statement not covered" >        res.end(result);</span>
+});
+    
+&nbsp;
+/**
+ * @description Restituisce una lista di aule disponibili nell'intervallo di tempo specificato. 
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param dipartimento id del dipartimento desiderato
+ * @param giorno: giorno in cui si vogliono gli orari, nel formato 'aaaa-mm-dd'
+ * @param dalle: orario iniziale a cui si è interessati, nel formato militare. Es: 16:00
+ * @param alle: orario finale a cui si è interessati, nel formato militare. Es: 16:00
+ * @returns lista di aule, nel formato specificato.
+ */
+app.all('/auleLibereDalleAlle', <span class="fstat-no" title="function not covered" >fu</span>nction (req, res) {
+    var check = <span class="cstat-no" title="statement not covered" >true;</span>
+    var formato = <span class="cstat-no" title="statement not covered" >req.query.formato != null ?  req.query.formato : req.body.formato;</span>
+    var dipartimento = <span class="cstat-no" title="statement not covered" >req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;</span>
+    var giorno = <span class="cstat-no" title="statement not covered" >req.query.giorno != null ?  req.query.giorno : req.body.giorno;</span>
+    var dalle = <span class="cstat-no" title="statement not covered" >req.query.dalle != null ?  req.query.dalle : req.body.dalle;</span>
+    var alle = <span class="cstat-no" title="statement not covered" >req.query.alle != null ?  req.query.alle : req.body.alle;</span>
+    var result  = <span class="cstat-no" title="statement not covered" >param_error + "\n" + p_o + param_formato + "\n" + param_dipartimento +"\n" + param_giorno + "\n" + param_dalle + "\n" + param_alle;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if(dipartimento == null || giorno == null || dalle == null || alle == null | !checkDate(giorno))</span>
+<span class="cstat-no" title="statement not covered" >        check = false;</span>
+<span class="cstat-no" title="statement not covered" >    if(check){</span>
+<span class="cstat-no" title="statement not covered" >        mysql.auleLibereDalleAlle(dipartimento,giorno,dalle,alle).then(<span class="fstat-no" title="function not covered" >(o</span>ut)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >            if(formato == "XML")</span>
+<span class="cstat-no" title="statement not covered" >                out = js2xmlparser.parse("aula", out);</span>
+<span class="cstat-no" title="statement not covered" >            res.send(out);</span>
+<span class="cstat-no" title="statement not covered" >            res.end();</span>
+        });
+    }else
+<span class="cstat-no" title="statement not covered" >        res.end(result);</span>
+});
+&nbsp;
+/**
+ * @description Restituisce una lista di lezioni per un'aula specificata in un giorno specificato. 
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param giorno: giorno in cui si vogliono gli orari, nel formato 'dd-mm-aaaa'
+ * @param aula: nome per l'aula per la quale si vogliono gli orari, es: 'Aula PC B107'
+ * @param dipartimento id del dipartimento desiderato
+ * @returns lista di lezioni, nel formato specificato.
+ */
+app.all('/orariAula', <span class="fstat-no" title="function not covered" >fu</span>nction (req, res) {
+    var check = <span class="cstat-no" title="statement not covered" >true;</span>
+    var formato = <span class="cstat-no" title="statement not covered" >req.query.formato != null ?  req.query.formato : req.body.formato;</span>
+    var aula = <span class="cstat-no" title="statement not covered" >req.query.aula != null ?  req.query.aula : req.body.aula;</span>
+    var giorno = <span class="cstat-no" title="statement not covered" >req.query.giorno != null ?  req.query.giorno : req.body.giorno;</span>
+    var dipartimento = <span class="cstat-no" title="statement not covered" >req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;</span>
+    var result  = <span class="cstat-no" title="statement not covered" >param_error + "\n" + p_o + param_formato + "\n" + param_aula +"\n" + param_giorno +"\n" + param_dipartimento;</span>
+<span class="cstat-no" title="statement not covered" >    if(aula == null || giorno == null || dipartimento == null || !checkDate(giorno))</span>
+<span class="cstat-no" title="statement not covered" >        check = false;</span>
+<span class="cstat-no" title="statement not covered" >    if(check){</span>
+<span class="cstat-no" title="statement not covered" >        mysql.orariAula(dipartimento,aula,giorno).then(<span class="fstat-no" title="function not covered" >(o</span>ut)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >            if(formato == "XML")</span>
+<span class="cstat-no" title="statement not covered" >                out = js2xmlparser.parse("lezione", out);</span>
+<span class="cstat-no" title="statement not covered" >            res.send(out);</span>
+<span class="cstat-no" title="statement not covered" >            res.end();</span>
+        });
+    }else    
+<span class="cstat-no" title="statement not covered" >        res.end(result);</span>
+});
+&nbsp;
+&nbsp;
+//************************************* SERVIZI BASE *****************************************/
+/**
+ * @description Restituisce una lista di dipartimenti.
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @returns lista dei dipartimenti
+ */
+app.all('/listaDipartimenti',<span class="fstat-no" title="function not covered" >fu</span>nction (req, res) {
+    var check   = <span class="cstat-no" title="statement not covered" >true;</span>
+    var formato = <span class="cstat-no" title="statement not covered" >req.query.formato != null ?  req.query.formato : req.body.formato;</span>
+    var result  = <span class="cstat-no" title="statement not covered" >param_error + "\n" + p_o + param_formato;</span>
+<span class="cstat-no" title="statement not covered" >    if(check){</span>
+<span class="cstat-no" title="statement not covered" >        mysql.listaDipartimenti().then(<span class="fstat-no" title="function not covered" >(o</span>ut)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >            if(formato == "XML")</span>
+<span class="cstat-no" title="statement not covered" >                out = js2xmlparser.parse("dipartimento", out);</span>
+<span class="cstat-no" title="statement not covered" >            res.send(out);</span>
+<span class="cstat-no" title="statement not covered" >            res.end();</span>
+        });
+    }else
+<span class="cstat-no" title="statement not covered" >        res.end(result);</span>
+});
+/**
+ * @description Restituisce una lista di aule del dipartimento specificato.
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param dipartimento: codice del dipartimento interessato
+ * @return lista delle aule del dipartimento specificato
+ */
+app.all('/listaAule',<span class="fstat-no" title="function not covered" >fu</span>nction (req, res) {
+    var check   = <span class="cstat-no" title="statement not covered" >true;</span>
+    var formato = <span class="cstat-no" title="statement not covered" >req.query.formato != null ?  req.query.formato : req.body.formato;</span>
+    var dipartimento = <span class="cstat-no" title="statement not covered" >req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;</span>
+    var result  = <span class="cstat-no" title="statement not covered" >param_error + "\n" + p_o + param_formato + "\n" + param_dipartimento;</span>
+<span class="cstat-no" title="statement not covered" >    if(dipartimento == null)</span>
+<span class="cstat-no" title="statement not covered" >        check = false;</span>
+<span class="cstat-no" title="statement not covered" >    if(check){</span>
+<span class="cstat-no" title="statement not covered" >        mysql.listaAule(dipartimento).then(<span class="fstat-no" title="function not covered" >(o</span>ut)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >            if(formato == "XML")</span>
+<span class="cstat-no" title="statement not covered" >                out = js2xmlparser.parse("aula", out);</span>
+<span class="cstat-no" title="statement not covered" >            res.send(out);</span>
+<span class="cstat-no" title="statement not covered" >            res.end();</span>
+        });
+    }else
+<span class="cstat-no" title="statement not covered" >        res.end(result);</span>
+});
+&nbsp;
+/**
+ * @description Restituisce una lista di docenti per il dipartimento specificato.
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param dipartimento: id del dipartimento interessato
+ * @return lista dei docenti del dipartimento specificato
+ */
+app.all('/listaDocenti',<span class="fstat-no" title="function not covered" >fu</span>nction (req, res) {
+    var check   = <span class="cstat-no" title="statement not covered" >true;</span>
+    var formato = <span class="cstat-no" title="statement not covered" >req.query.formato != null ?  req.query.formato : req.body.formato;</span>
+    var dipartimento = <span class="cstat-no" title="statement not covered" >req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;</span>
+    var result  = <span class="cstat-no" title="statement not covered" >param_error + "\n" + p_o + param_formato + "\n" + param_dipartimento;</span>
+<span class="cstat-no" title="statement not covered" >    if(dipartimento == null)</span>
+<span class="cstat-no" title="statement not covered" >        check = false;</span>
+<span class="cstat-no" title="statement not covered" >    if(check){</span>
+<span class="cstat-no" title="statement not covered" >        mysql.listaDocenti(dipartimento).then(<span class="fstat-no" title="function not covered" >(o</span>ut)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >            if(formato == "XML")</span>
+<span class="cstat-no" title="statement not covered" >                out = js2xmlparser.parse("docente", out);</span>
+<span class="cstat-no" title="statement not covered" >            res.send(out);</span>
+<span class="cstat-no" title="statement not covered" >            res.end();</span>
+        });
+    }else
+<span class="cstat-no" title="statement not covered" >        res.end(result);</span>
+});
+/**
+ * @description Restituisce una lista di corsi per il dipartimento specificato.
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param dipartimento: id del dipartimento interessato
+ * @return lista dei corsi del dipartimento specificato
+ */
+app.all('/listaCorsi',<span class="fstat-no" title="function not covered" >fu</span>nction (req, res) {
+    var check   = <span class="cstat-no" title="statement not covered" >true;</span>
+    var formato = <span class="cstat-no" title="statement not covered" >req.query.formato != null ?  req.query.formato : req.body.formato;</span>
+    var dipartimento = <span class="cstat-no" title="statement not covered" >req.query.dipartimento != null ?  req.query.dipartimento : req.body.dipartimento;</span>
+    var result  = <span class="cstat-no" title="statement not covered" >param_error + "\n" + p_o + param_formato + "\n" + param_dipartimento;</span>
+<span class="cstat-no" title="statement not covered" >    if(dipartimento == null)</span>
+<span class="cstat-no" title="statement not covered" >        check = false;</span>
+<span class="cstat-no" title="statement not covered" >    if(check){</span>
+<span class="cstat-no" title="statement not covered" >        mysql.listaCorsi(dipartimento).then(<span class="fstat-no" title="function not covered" >(o</span>ut)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >            if(formato == "XML")</span>
+<span class="cstat-no" title="statement not covered" >                out = js2xmlparser.parse("corso", out);</span>
+<span class="cstat-no" title="statement not covered" >            res.send(out);</span>
+<span class="cstat-no" title="statement not covered" >            res.end();</span>
+        });
+    }else
+<span class="cstat-no" title="statement not covered" >        res.end(result);</span>
+});
+&nbsp;
+/**
+ * @description Restituisce una lista di subcorsi per il corso specificato.
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param corso: id del corso interessato
+ * @return lista dei subcorsi del corso specificato
+ */
+app.all('/listaSubcorsi',<span class="fstat-no" title="function not covered" >fu</span>nction (req, res) {
+    var check   = <span class="cstat-no" title="statement not covered" >true;</span>
+    var formato = <span class="cstat-no" title="statement not covered" >req.query.formato != null ?  req.query.formato : req.body.formato;</span>
+    var corso = <span class="cstat-no" title="statement not covered" >req.query.corso != null ?  req.query.corso : req.body.corso;</span>
+    var result  = <span class="cstat-no" title="statement not covered" >param_error + "\n" + p_o + param_formato + "\n" + param_corso;</span>
+<span class="cstat-no" title="statement not covered" >    if(corso == null)</span>
+<span class="cstat-no" title="statement not covered" >        check = false;</span>
+<span class="cstat-no" title="statement not covered" >    if(check){</span>
+<span class="cstat-no" title="statement not covered" >        mysql.listaSubcorsi(corso).then(<span class="fstat-no" title="function not covered" >(o</span>ut)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >            if(formato == "XML")</span>
+<span class="cstat-no" title="statement not covered" >                out = js2xmlparser.parse("subcorso", out);</span>
+<span class="cstat-no" title="statement not covered" >            res.send(out);</span>
+<span class="cstat-no" title="statement not covered" >            res.end();</span>
+        });
+    }else
+<span class="cstat-no" title="statement not covered" >        res.end(result);</span>
+});
+&nbsp;
+/**
+ * @description Restituisce una lista di materie per il subcorso specificato.
+ * @param formato: formato in cui i dati vogliono essere ricevuti; può essere JSON o XML. Default = JSON
+ * @param subcorso: id del subcorso interessato
+ * @return lista delle materie del subcorso specificato
+ */
+app.all('/listaMaterie',<span class="fstat-no" title="function not covered" >fu</span>nction (req, res) {
+    var check   = <span class="cstat-no" title="statement not covered" >true;</span>
+    var formato = <span class="cstat-no" title="statement not covered" >req.query.formato != null ?  req.query.formato : req.body.formato;</span>
+    var subcorso = <span class="cstat-no" title="statement not covered" >req.query.subcorso != null ?  req.query.subcorso : req.body.subcorso;</span>
+    var result  = <span class="cstat-no" title="statement not covered" >param_error + "\n" + p_o + param_formato + "\n" + param_subcorso;</span>
+<span class="cstat-no" title="statement not covered" >    if(subcorso == null)</span>
+<span class="cstat-no" title="statement not covered" >        check = false;</span>
+<span class="cstat-no" title="statement not covered" >    if(check){</span>
+<span class="cstat-no" title="statement not covered" >        mysql.listaMaterie(subcorso).then(<span class="fstat-no" title="function not covered" >(o</span>ut)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >            if(formato == "XML")</span>
+<span class="cstat-no" title="statement not covered" >                out = js2xmlparser.parse("subcorso", out);</span>
+<span class="cstat-no" title="statement not covered" >            res.send(out);</span>
+<span class="cstat-no" title="statement not covered" >            res.end();</span>
+        });
+    }else
+<span class="cstat-no" title="statement not covered" >        res.end(result);</span>
+});
+/**FUNZIONI AUSILIARI */
+var checkDate = function(d){
+    d = new Date(d);
+    return (d instanceof Date &amp;&amp; !isNaN(d.valueOf()));
+}
+var checkHour = <span class="fstat-no" title="function not covered" >fu</span>nction(h){
+<span class="cstat-no" title="statement not covered" >    return isValid = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(h);</span>
+}
+//server methods 
+app.use(<span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {
+    const err = <span class="cstat-no" title="statement not covered" >new Error('Not Found');</span>
+<span class="cstat-no" title="statement not covered" >    err.status = 404;</span>
+<span class="cstat-no" title="statement not covered" >    next(err);</span>
+});
+app.use(<span class="fstat-no" title="function not covered" >(e</span>rr, req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >    res.status(err.status || 500);</span>
+<span class="cstat-no" title="statement not covered" >    res.json({ error: { message: err.message } });</span>
+});
+app.listen(port, function () {
+    
+});
+&nbsp;
+exports.checkDate = checkDate;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Dec 07 2017 14:49:31 GMT+0100 (W. Europe Standard Time)
+</div>
+</div>
+<script src="prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="sorter.js"></script>
+</body>
+</html>
