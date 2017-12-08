@@ -47,13 +47,15 @@
     align: right;
     margin-top: 0px !important;
     text-transform: none !important;
-    padding-right: 30px;    
+    padding-right: 30px; 
+    white-space: normal;   
 }
 .message-receive{
     align: left;
     margin-top: 0px !important;
     text-transform: none !important;
     max-width: 90%; 
+    white-space: normal;    
 }
 .left-container{
     height:100%;

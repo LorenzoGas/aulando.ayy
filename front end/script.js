@@ -1,16 +1,16 @@
-function chatResize(container){
-    var cheigth=container.offset().top - $(window).scrollTop()
+function chatResize(container) {
+    var cheigth = container.offset().top - $(window).scrollTop()
     console.log($(window).height());
     console.log(cheigth);
-    container.height($(window).height()-cheigth-200);
+    container.height($(window).height() - cheigth - 200);
 
 }
-$(window).resize(function(){
-    var container=$("#chat-container");
+$(window).resize(function () {
+    var container = $("#chat-container");
     chatResize(container);
 });
-$(document).ready(function(){
-    var container=$("#chat-container");
+$(document).ready(function () {
+    var container = $("#chat-container");
     chatResize(container);
 });
 
@@ -18,6 +18,10 @@ $(document).ready(function(){
 String.prototype.splice = function (idx, rem, str) {
     return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
 };
+
+String.prototype.insert=function(i,str){
+    return this.slice(0,i)+str+this.slice(i+1,this.length);
+}
 
 $("#userInput").change(startProcedure);
 
@@ -28,6 +32,12 @@ function startProcedure() {
     $("#userInput").val("");
 }
 
+function prepareInput(txt) {
+    for (var i = 0; i < txt.length; i++)
+        if (i % 30 == 0 && i!=0)
+            txt=txt.insert(i, "<br>");
+    return txt;
+}
 
 function appentNewText(txt, source) {
     var msg = source.html().replace("^", txt);
@@ -43,7 +53,7 @@ function send(txt) {
     var cookie;
     var session = -1;
     if (session < 0) {
-        var jqxhr = $.get("https://aulando-ayy-dialogflow-api.herokuapp.com/dialogflow_api/resolveQuery?requestQuery=" + txt, function () { })
+        var jqxhr = $.get("https://aulando-ayy-dialogflow-api.herokuapp.com/dialogflow_api/resolveQuery?requestQuery=" + txt, function () {})
             .done(function (res) {
                 manageRes(res);
                 session = 1;
@@ -53,7 +63,7 @@ function send(txt) {
                 $('#error').modal();
             });
     } else {
-        var jqxhr = $.get("https://aulando-ayy-dialogflow-api.herokuapp.com/dialogflow_api/resolveQuery?requestQuery=" + txt + "&id=" + cookie, function () { })
+        var jqxhr = $.get("https://aulando-ayy-dialogflow-api.herokuapp.com/dialogflow_api/resolveQuery?requestQuery=" + txt + "&id=" + cookie, function () {})
             .done(function (res) {
                 manageRes(res);
             })
