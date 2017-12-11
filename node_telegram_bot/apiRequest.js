@@ -4,6 +4,12 @@ function sendQuery(text, id){
 
     return new Promise(function (fulfill, reject)
     {
+      if(!(typeof text === 'string' || text instanceof String)){
+        reject(new Error("text must be a string."))
+    }
+    if(!(typeof id === 'string' || id instanceof String || id==null)){
+        reject(new Error("id must be a string."))
+    }
         var url = 'https://aulando-ayy-dialogflow-api.herokuapp.com/dialogflow_api/resolveQuery?requestQuery=' +  text
         if(id)
             url += '&id=' + id
@@ -19,8 +25,7 @@ function sendQuery(text, id){
               error = new Error('Invalid content-type.\n' +
                                 `Expected application/json but received ${contentType}`);
             }
-            if (error) {
-              console.error(error.message);
+            if (error) {;
               // consume response data to free up memory
               res.resume();
               reject(error);
@@ -33,13 +38,10 @@ function sendQuery(text, id){
             res.on('end', () => {
               try {
                 const parsedData = JSON.parse(rawData);
-                console.log(parsedData);
       
                 var textResult = ''
       
                 textResult += parsedData.speech
-      
-                console.log(parsedData)
       
                 if(parsedData.result){
       
@@ -61,15 +63,13 @@ function sendQuery(text, id){
                    
                 }
       
-                fulfill(textResult)
+                fulfill(textResult.toString())
       
               } catch (e) {
-                console.error(e.message);
                 reject(e);
               }
             });
           }).on('error', (e) => {
-            console.error(`Got error: ${e.message}`);
             reject(e);
           });
     })

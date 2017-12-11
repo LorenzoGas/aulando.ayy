@@ -1,6 +1,6 @@
 var apiRequest = require('./apiRequest')
 
-const erroreInterno = 'Errore interno'
+const erroreInterno = "Errore interno. Mi dispiace che io sia così malfunzionante, riprova più tardi :("
 const erroreTroppiCaratteri = 'Wowow troppe parole! Capisco solo 256 caratteri.'
 var messaggioBenvenuto = 'Benvenuto/a!\n\n'
 + 'Puoi chiedere diverse domande relative alle aule, per esempio:\n\n' 
@@ -25,9 +25,12 @@ function elaborate(msg){
                         fulfill(messaggioBenvenuto)
                     }else{
                         if(msg.text.length < 256){
-                          apiRequest.sendQuery(msg.text, msg.chat.id).then(data => {
+                          apiRequest.sendQuery(msg.text.toString(), msg.chat.id.toString()).then(data => {
                             fulfill(data)
                           }).catch(error => {
+                            
+                            //stampa l'errore in log
+                            console.log(error)
                             fulfill(erroreInterno)
                           })
                         }else{
@@ -35,8 +38,8 @@ function elaborate(msg){
                         }   
                     }
 
-        }catch(err){
-            reject(err)
+        }catch(e){
+            reject(new Error(e.message))
         }
     })
 }
