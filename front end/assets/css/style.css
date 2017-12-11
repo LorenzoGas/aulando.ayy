@@ -1,6 +1,6 @@
 @media screen and (max-width: 1000px) {
     .container-fluid{
-    padding-right: 0px;       
+    padding-right: 0px;         
     padding-left: 0px; 
         }
     .main-raised{
@@ -12,10 +12,6 @@
     .arrow-right{
         display:none  !important;
     }
-
- 
-
-
     .message-receive > .col-sm-11{
         margin-left:30px !important;
     }
@@ -31,6 +27,12 @@
     bottom: 20px;
     
 }
+.msg-content{
+    word-wrap: break-word;
+    display: inline-block;
+    word-break: break-all
+}
+
 @media  screen and (max-width: 800px) {
     .label-floating{
         width:100%;
@@ -47,13 +49,17 @@
     align: right;
     margin-top: 0px !important;
     text-transform: none !important;
-    padding-right: 30px;    
+    padding-right: 30px; 
+    white-space: normal;   
+    word-wrap: break-word;
 }
 .message-receive{
     align: left;
     margin-top: 0px !important;
     text-transform: none !important;
     max-width: 90%; 
+    white-space: normal;  
+    word-wrap: break-word;  
 }
 .left-container{
     height:100%;
