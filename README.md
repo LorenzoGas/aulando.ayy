@@ -1,2 +1,0 @@
-# aulando.ayy
-lamao
