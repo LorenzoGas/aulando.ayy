@@ -1,3 +1,0 @@
-@echo=off
-SET NODE_ENV=development
-SET TOKEN=503285101:AAF-h15lmFBbp9yc5Cegp_2VGZGJYd-nElI
