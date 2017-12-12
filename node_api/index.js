@@ -18,6 +18,7 @@ var param_aula          = "aula = codice";
 var param_ora           = "ora = hh:mm";
 var param_dalle         = "dalle = hh:mm";
 var param_alle          = "alle = hh:mm";
+var error_message       = "Si è verificato un errore, riprova più tardi!";
 
 // instantiate express
 var app = express();
@@ -71,6 +72,8 @@ app.all('/auleLibere',function (req, res) {
         check = false;
     if(check){
         mysql.auleLibere(dipartimento,giorno,ora).then((out)=>{
+            if(out == "error")
+                out = error_message;
             if(formato == "XML")
                 out = js2xmlparser.parse("aula", out);
             res.send(out);
@@ -103,6 +106,8 @@ app.all('/auleLibereDalleAlle', function (req, res) {
         check = false;
     if(check){
         mysql.auleLibereDalleAlle(dipartimento,giorno,dalle,alle).then((out)=>{
+            if(out == "error")
+                out = error_message;
             if(formato == "XML")
                 out = js2xmlparser.parse("aula", out);
             res.send(out);
@@ -131,6 +136,8 @@ app.all('/orariAula', function (req, res) {
         check = false;
     if(check){
         mysql.orariAula(dipartimento,aula,giorno).then((out)=>{
+            if(out == "error")
+                out = error_message;
             if(formato == "XML")
                 out = js2xmlparser.parse("lezione", out);
             res.send(out);
@@ -153,6 +160,8 @@ app.all('/listaDipartimenti',function (req, res) {
     var result  = param_error + "\n" + p_o + param_formato;
     if(check){
         mysql.listaDipartimenti().then((out)=>{
+            if(out == "error")
+                out = error_message;
             if(formato == "XML")
                 out = js2xmlparser.parse("dipartimento", out);
             res.send(out);
@@ -176,6 +185,8 @@ app.all('/listaAule',function (req, res) {
         check = false;
     if(check){
         mysql.listaAule(dipartimento).then((out)=>{
+            if(out == "error")
+                out = error_message;
             if(formato == "XML")
                 out = js2xmlparser.parse("aula", out);
             res.send(out);
@@ -200,6 +211,8 @@ app.all('/listaDocenti',function (req, res) {
         check = false;
     if(check){
         mysql.listaDocenti(dipartimento).then((out)=>{
+            if(out == "error")
+                out = error_message;
             if(formato == "XML")
                 out = js2xmlparser.parse("docente", out);
             res.send(out);
@@ -223,6 +236,8 @@ app.all('/listaCorsi',function (req, res) {
         check = false;
     if(check){
         mysql.listaCorsi(dipartimento).then((out)=>{
+            if(out == "error")
+                out = error_message;
             if(formato == "XML")
                 out = js2xmlparser.parse("corso", out);
             res.send(out);
@@ -247,6 +262,8 @@ app.all('/listaSubcorsi',function (req, res) {
         check = false;
     if(check){
         mysql.listaSubcorsi(corso).then((out)=>{
+            if(out == "error")
+                out = error_message;
             if(formato == "XML")
                 out = js2xmlparser.parse("subcorso", out);
             res.send(out);
@@ -271,6 +288,8 @@ app.all('/listaMaterie',function (req, res) {
         check = false;
     if(check){
         mysql.listaMaterie(subcorso).then((out)=>{
+            if(out == "error")
+                out = error_message;
             if(formato == "XML")
                 out = js2xmlparser.parse("subcorso", out);
             res.send(out);
