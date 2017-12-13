@@ -73,19 +73,27 @@ function send(txt) {
     }
 }
 
-function manageRes(res) {
-    var text = res.speech;
-    if (res.result) {
-        if (res.result != null) {
-            text += "<ul>";
-            res.result.forEach(function (item, i) {
-                text += '<b>' + item.materia + '</b>'
-                if (item.fine != null)
-                    text += ' fino alle ' + item.fine + "<br>";
-                else
-                    text += "<br>";
-            });
+function manageRes(parsedData) {
+    var textResult = parsedData.speech;
+
+    if(parsedData.result){
+        
+        if(parsedData.result.length == 0){
+            textResult += '<br>Nessun risultato :('
         }
+
+        parsedData.result.forEach(function(element) {
+        if(element.nome)
+            textResult += '<br><b>' + element.nome + '</b>'
+        if(element.materia)
+            textResult += '<br><b>' + element.materia + '</b>'
+        if(element.inizio && element.fine)
+            textResult += ' dalle ' + element.inizio + " alle " + element.fine
+        if(element.fino)
+            textResult += ' fino alle: ' + element.fino
+        
+        });
+        
     }
-    appentNewText(text, $("#message-receive-text"));
+    appentNewText(textResult, $("#message-receive-text"));
 }
