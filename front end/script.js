@@ -79,21 +79,25 @@ function manageRes(parsedData) {
     if(parsedData.result){
         
         if(parsedData.result.length == 0){
-            textResult += '<br>Nessun risultato :('
-        }
+            textResult += '<br>Nessun risultato :(';
+        }else
+            textResult += "<ul>";
 
         parsedData.result.forEach(function(element) {
-        if(element.nome)
-            textResult += '<br><b>' + element.nome + '</b>'
-        if(element.materia)
-            textResult += '<br><b>' + element.materia + '</b>'
-        if(element.inizio && element.fine)
-            textResult += ' dalle ' + element.inizio + " alle " + element.fine
-        if(element.fino)
-            textResult += ' fino alle: ' + element.fino
-        
+            textResult += "<li>";
+            if(element.nome)
+                textResult += '<b>' + element.nome + '</b>';
+            if(element.materia)
+                textResult += '<b>' + element.materia + '</b>';
+            if(element.inizio && element.fine)
+                textResult += ' dalle ' + element.inizio + " alle " + element.fine;
+            if(element.fino)
+                textResult += ' fino alle: ' + element.fino;
+            textResult += "</li>";
         });
-        
+        if(parsedData.result.length != 0){
+            textResult += "</ul>";
+        }
     }
     appentNewText(textResult, $("#message-receive-text"));
 }
