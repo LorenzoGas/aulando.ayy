@@ -113,7 +113,7 @@
     position: absolute;
     bottom: 2px;
     right: 5px;
-    font-size: 0.75em;
+    font-size: 0.65em;
     font-style: italic;
 }
 .chat{
@@ -124,4 +124,16 @@
 
 .message-content{
 
+}
+.message-receive ul{
+    padding-left:10px;
+}
+span{
+    font-size: 16px;
+}
+.message-receive.btn.btn-info,.message-send.btn.btn-success{
+    padding-bottom: 20px;
+}
+.info-msg span{
+    font-size: 12px;
 }
