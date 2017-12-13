@@ -73,19 +73,31 @@ function send(txt) {
     }
 }
 
-function manageRes(res) {
-    var text = res.speech;
-    if (res.result) {
-        if (res.result != null) {
-            text += "<ul>";
-            res.result.forEach(function (item, i) {
-                text += '<b>' + item.materia + '</b>'
-                if (item.fine != null)
-                    text += ' fino alle ' + item.fine + "<br>";
-                else
-                    text += "<br>";
-            });
+function manageRes(parsedData) {
+    var textResult = parsedData.speech;
+
+    if(parsedData.result){
+        
+        if(parsedData.result.length == 0){
+            textResult += '<br>Nessun risultato :(';
+        }else
+            textResult += "<ul>";
+
+        parsedData.result.forEach(function(element) {
+            textResult += "<li>";
+            if(element.nome)
+                textResult += '<b>' + element.nome + '</b>';
+            if(element.materia)
+                textResult += '<b>' + element.materia + '</b>';
+            if(element.inizio && element.fine)
+                textResult += ' dalle ' + element.inizio + " alle " + element.fine;
+            if(element.fino)
+                textResult += ' fino alle: ' + element.fino;
+            textResult += "</li>";
+        });
+        if(parsedData.result.length != 0){
+            textResult += "</ul>";
         }
     }
-    appentNewText(text, $("#message-receive-text"));
+    appentNewText(textResult, $("#message-receive-text"));
 }
