@@ -79,10 +79,11 @@ function manageRes(res) {
         if (res.result != null) {
             text += "<ul>";
             res.result.forEach(function (item, i) {
-                if (item.fino != null)
-                    text += item.nome + " fino alle <b>" + item.fino + "</b><br>";
+                text += '<b>' + item.materia + '</b>'
+                if (item.fine != null)
+                    text += ' fino alle ' + item.fine + "<br>";
                 else
-                    text += item.nome + "<br>";
+                    text += "<br>";
             });
         }
     }
